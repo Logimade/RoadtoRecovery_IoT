@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">agorasim</string>
+    <string name="termometro">Temperature</string>
+    <string name="action_disconnect">action disconect</string>
+    <string name="state_connecting">State connection</string>
+    <string name="state_disconnecting">state disconection</string>
+    <string name="tensiometro">Blood pressure</string>
+</resources>
