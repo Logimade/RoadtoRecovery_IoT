@@ -5,4 +5,5 @@
     <string name="state_connecting">State connection</string>
     <string name="state_disconnecting">state disconection</string>
     <string name="tensiometro">Blood pressure</string>
+    <string name="egc">Heart Rate</string>
 </resources>
