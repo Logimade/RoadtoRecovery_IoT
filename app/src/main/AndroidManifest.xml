@@ -65,9 +65,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter> -->
         </activity>
-        <activity android:name=".Settings">
-            <!-- Intent filters go here, if any -->
-        </activity>
 
     </application>
 
