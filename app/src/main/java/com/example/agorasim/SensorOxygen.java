@@ -17,10 +17,6 @@ import androidx.core.app.ActivityCompat;
 
 import com.squareup.otto.Subscribe;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -29,46 +25,72 @@ import util.TimeOut;
 import util.Util;
 import visiomed.fr.bleframework.common.BLECenter;
 import visiomed.fr.bleframework.common.BLEContext;
-import visiomed.fr.bleframework.data.thermometer.ThermometerData;
 import visiomed.fr.bleframework.device.DeviceFactory;
 import visiomed.fr.bleframework.device.GenericDevice;
-import visiomed.fr.bleframework.device.Thermometer;
+import visiomed.fr.bleframework.device.Oximeter;
 import visiomed.fr.bleframework.event.common.BLEDeviceStateEvent;
-import visiomed.fr.bleframework.event.thermometer.ThermometerEvent;
+import visiomed.fr.bleframework.event.oximeter.OximeterEvent;
 
-public class SensorTermoActivity extends AppCompatActivity {
 
+public class SensorOxygen extends AppCompatActivity {
+
+    static final int PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 1;
     int tickCount = 0;
     private String mac;
-    private TextView txt_thermo, titulo, txtEstado, txt_data_hora;
     private BLECenter bleCenter;
-    private Thermometer thermometer;
     private TimeOut timeOut;
-    private SensorTermoActivity self;
     private Button btnSeguinte, btnSair, btnVoltar;
+    private TextView titulo, txtSP, txt_data_hora, txtEstado, valorFC, valorSP ;
     private ProgressBar progressBar;
-    private static Float temperatura = 0.0F;
+    private SensorOxygen self;
+    private Oximeter oximeter;
+    private int oxygenContent = -1;
+    private int pulse = -1;
     private Timer timer;
     private int flagTemp = 0;
 
-    public String ip1;
-
-
-    //MyThread myThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sensortermoactivity);
+        setContentView(R.layout.activity_sensor_oxygen);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        //myThread = new MyThread("");
-        //new Thread(myThread).start();
 
         Util.fullscreen(this);
 
-        ip1= getIntent().getStringExtra("Ip_text");
+        btnSair = findViewById(R.id.btnSair);
+        btnVoltar = findViewById(R.id.btnVoltar);
+        btnSeguinte = findViewById(R.id.btnSeguinte);
 
+        btnSair.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SensorOxygen.this, Menu_escolhas.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        btnSeguinte.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if ((oximeter != null) && oximeter.hasConnection()) {
+                    oximeter.disconnect();
+                }
+
+                Intent intent = new Intent(SensorOxygen.this, FinalActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        btnVoltar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SensorOxygen.this, SensorTensaoActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         timer = new Timer();
         TimerTask myTask = new TimerTask() {
@@ -85,8 +107,7 @@ public class SensorTermoActivity extends AppCompatActivity {
 
         timer.schedule(myTask, 1000, 1000);
 
-
-        self = SensorTermoActivity.this;
+        self = SensorOxygen.this;
         BLECenter.DEBUG_LOG_ON = true;
         BLECenter.DEBUG_LOG_LEVEL = 1;
         bleCenter = BLEContext.getBLECenter(getApplicationContext());
@@ -96,50 +117,20 @@ public class SensorTermoActivity extends AppCompatActivity {
 
     private void initParams() {
         titulo = findViewById(R.id.txt_title_bar);
-        titulo.setText(getString(R.string.termometro));
-        btnSair = findViewById(R.id.btnSair);
-        btnVoltar = findViewById(R.id.btnVoltar);
-        btnSeguinte = findViewById(R.id.btnSeguinte);
-        txt_thermo = findViewById(R.id.txt_egc);
-        txtEstado = findViewById(R.id.txtEstado);
+        titulo.setText(getString(R.string.oximetro));
+        valorSP = findViewById(R.id.valorSP);
         txt_data_hora = findViewById(R.id.txt_data_hora);
+        txtEstado = findViewById(R.id.txtEstado);
 
+        txtSP = findViewById(R.id.txtSP);
 
-        btnSeguinte.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if ((thermometer != null) && thermometer.hasConnection()) {
-                    thermometer.disconnect();
-                }
+        final String s = "SpO₂";
+        txtSP.setText(s);
 
-                Intent intent = new Intent(SensorTermoActivity.this, SensorEgcActivity.class);
-                startActivity(intent);
-
-            }
-        });
-
-
-        btnSair.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(getApplicationContext(), Menu_escolhas.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-        });
-
-
-        btnVoltar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
     }
 
     private void startLEScan() {
-        bleCenter.startBLEScan(DeviceFactory.Device.THERMOMETER.getScanOption());
+        bleCenter.startBLEScan(DeviceFactory.Device.OXIMETER.getScanOption());
 
 
         new Thread(new Runnable() {
@@ -153,13 +144,13 @@ public class SensorTermoActivity extends AppCompatActivity {
                         ArrayList<GenericDevice> device = bleCenter.getDevices();
                         for (GenericDevice g : device) {
 
-                            if (g instanceof Thermometer) {
+                            if (g instanceof Oximeter) {
                                 g.connect();
-                                thermometer = (Thermometer) bleCenter.getDevice(g.getBleDevice().getAddress());
+                                oximeter = (Oximeter) bleCenter.getDevice(g.getBleDevice().getAddress());
                                 mac = g.getBleDevice().getAddress();
 
                                 Log.i("LOG_APP", mac);
-                                if (ActivityCompat.checkSelfPermission(SensorTermoActivity.this, android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+                                if (ActivityCompat.checkSelfPermission(SensorOxygen.this, android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
                                     // TODO: Consider calling
                                     //    ActivityCompat#requestPermissions
                                     // here to request the missing permissions, and then overriding
@@ -184,8 +175,8 @@ public class SensorTermoActivity extends AppCompatActivity {
             }
         }).start();
 
-    }
 
+    }
     private void stopLEScan() {
         bleCenter.stopBLEScan();
     }
@@ -196,11 +187,13 @@ public class SensorTermoActivity extends AppCompatActivity {
 
         timeOut = new TimeOut(this);
         txtEstado.setText("A encontrar dispositivo ...");
-        showLoading();
         txt_data_hora.setText(Util.currentDataTime());
-
+        //btnSeguinte.setVisibility(View.INVISIBLE);
+        showLoading();
         startLEScan();
+
         BLECenter.bus().register(this);
+
     }
 
     @Override
@@ -208,79 +201,51 @@ public class SensorTermoActivity extends AppCompatActivity {
         super.onPause();
 
         stopLEScan();
-        if ((thermometer != null) && thermometer.hasConnection()) {
-            thermometer.disconnect();
+
+        if ((oximeter != null) && oximeter.hasConnection()) {
+            oximeter.disconnect();
         }
 
-        timer.cancel();
         timeOut.stopHandler();
+        timer.cancel();
+        //    if (TempDataStore.interfaceList.get(17).getInterfaceTime() == 0) {
+        //        TempDataStore.interfaceList.get(17).setInterfaceTime(tickCount);
+        //        Log.i("LOG_APP", Integer.toString(tickCount));
+        //    }
 
         BLECenter.bus().unregister(this);
 
     }
 
-    public void updateResult(final ThermometerData data) {
-        runOnUiThread(new Runnable() {
-            Socket socket;
-            DataOutputStream dos;
-
-            @Override
-            public void run() {
-                if (data != null) {
-
-                    temperatura = ((float) data.getTemperature()) / 10.0F;
-                    Log.d("MYINT", "value1: " + temperatura);
-
-
-                    if (temperatura < 32 || temperatura > 43) {
-                        flagTemp = 1;
-                        temperatura = 1F;
-                        txtEstado.setText("A encontrar dispositivo ...");
-                        startLEScan();
-
-                    } else {
-                        txt_thermo.setText(Float.toString(temperatura));
-
-                    }
-                }
-                //UNCOMMENT TO CONNECT TO SOCKET_SERVER
-
-                try {
-                    Thread.sleep(1000);
-                    Log.d("MYINT", "value2: "+temperatura);
-                    String frase= Float.toString(temperatura);
-                    String msg= "S: temp:"+frase;
-                    //String str = String.valueOf(temperatura);
-                    socket = new Socket(ip1, 12345);
-                    dos = new DataOutputStream(socket.getOutputStream());
-
-                    dos.write(msg.getBytes(StandardCharsets.UTF_8));
-                    dos.close();
-                    dos.flush();
-                    socket.close();
-
-
-
-                } catch (IOException | InterruptedException e) {
-                    throw new RuntimeException(e);
-            }
-            }
-        });
-    }
-
     @Subscribe
     @SuppressWarnings("unused")
-    public void onThermometerEvent(final ThermometerEvent event) {
-        if (event.getMac().equalsIgnoreCase(mac)) {
-            updateResult(event.getThermometerData());
-        }
+    public void onOximeterEvent(final OximeterEvent event) {
+
+        self.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                oxygenContent = event.getOximeterData().getOxygenContent();
+                pulse = event.getOximeterData().getPulse();
+
+                if (oxygenContent > 0 && pulse > 0) {
+                    valorFC.setText(Integer.toString(pulse));
+                    valorSP.setText(Integer.toString(oxygenContent));
+
+                    Util.fullscreen(SensorOxygen.this);
+                    txtEstado.setText(R.string.sucesso_medicao);
+                    // btnSeguinte.setVisibility(View.VISIBLE);
+                    // btnSeguinte.setAnimation(AnimationUtils.loadAnimation(SensorOxyActivity.this,R.anim.shake_button));
+                }
+
+            }
+        });
     }
 
     private void showLoading() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                RelativeLayout relativeLayout = findViewById(R.id.thermometer_activity_main_content);
+                RelativeLayout relativeLayout = findViewById(R.id.oximeter_activity_main_content);
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 params.addRule(RelativeLayout.CENTER_IN_PARENT);
                 if (progressBar == null) {
@@ -297,7 +262,7 @@ public class SensorTermoActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.thermometer_activity_main_content);
+                RelativeLayout relativeLayout = findViewById(R.id.oximeter_activity_main_content);
                 relativeLayout.removeView(progressBar);
             }
         });
@@ -313,20 +278,19 @@ public class SensorTermoActivity extends AppCompatActivity {
                     if (event.getConnectionState() == BLEDeviceStateEvent.CONNECTION_STATE_CONNECTING) {
                         txtEstado.setText(R.string.state_connecting);
                     } else if (event.getConnectionState() == BLEDeviceStateEvent.CONNECTION_STATE_CONNECTED) {
-                        txtEstado.setText("Medição realizada");
+                        txtEstado.setText("A realizar medição ...");
                         hideLoading();
                     } else if (event.getConnectionState() == BLEDeviceStateEvent.CONNECTION_STATE_DISCONNECTING) {
                         txtEstado.setText(R.string.state_disconnecting);
+                    } else if (event.getConnectionState() == BLEDeviceStateEvent.CONNECTION_STATE_DISCONNECTED) {
+                        // txtEstado.setText(R.string.action_connect);
                     } else if (event.getConnectionState() == BLEDeviceStateEvent.CONNECTION_STATE_GATT_FAILED) {
                         txtEstado.setText("Dispositivo desligado");
 
-                        if (temperatura == null) {
-                            if (flagTemp == 0) {
-                                txtEstado.setText("Medição realizada");
-                            }
+                        if ((pulse < 0 || oxygenContent < 0)) {
+                            showLoading();
                             startLEScan();
                             txtEstado.setText("A encontrar dispositivo ...");
-
 
                         } else {
                             hideLoading();
@@ -336,4 +300,5 @@ public class SensorTermoActivity extends AppCompatActivity {
             }
         });
     }
+
 }

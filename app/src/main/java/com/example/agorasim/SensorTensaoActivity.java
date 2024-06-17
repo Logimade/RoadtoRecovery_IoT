@@ -17,6 +17,8 @@ import androidx.core.app.ActivityCompat;
 
 import com.squareup.otto.Subscribe;
 
+import java.io.DataOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -101,7 +103,7 @@ public class SensorTensaoActivity extends AppCompatActivity {
                     bpm.disconnect();
                 }
 
-                Intent intent = new Intent(SensorTensaoActivity.this, FinalActivity.class);
+                Intent intent = new Intent(SensorTensaoActivity.this, SensorOxygen.class);
                 startActivity(intent);
             }
         });
@@ -111,7 +113,7 @@ public class SensorTensaoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), Menu_escolhas.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
@@ -329,6 +331,10 @@ public class SensorTensaoActivity extends AppCompatActivity {
 
     private void updateResult(final BPMData data) {
         runOnUiThread(new Runnable() {
+
+            Socket socket;
+            DataOutputStream dos;
+
             @Override
             public void run() {
                 if (data != null) {
@@ -337,6 +343,27 @@ public class SensorTensaoActivity extends AppCompatActivity {
                     valorSYS.setText(Integer.toString(sys));
                     valorDIA.setText(Integer.toString(dia));
                 }
+
+                /*
+                try {
+                    Thread.sleep(1000);
+                    //Log.d("MYINT", "value2: "+sys);
+                    String frase1= Float.toString(sys);
+                    String frase2= Float.toString(sys);
+                    String msg= "S: tens:"+frase1+frase2;
+                    socket = new Socket("100.125.148.126", 12345);
+                    dos = new DataOutputStream(socket.getOutputStream());
+
+                    dos.write(msg.getBytes(StandardCharsets.UTF_8));
+                    dos.close();
+                    dos.flush();
+                    socket.close();
+
+
+
+                } catch (IOException | InterruptedException e) {
+                    throw new RuntimeException(e);
+                }*/
             }
         });
     }

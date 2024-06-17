@@ -10,18 +10,18 @@
         android:required="true" />
 
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-    <uses-permission android:name="android.permission.BLUETOOTH_SCAN"
-                     android:usesPermissionFlags="neverForLocation"/>
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_SCAN"
+        android:usesPermissionFlags="neverForLocation" />
     <uses-permission android:name="android.permission.INTERNET" />
-
-
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED"
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_PRIVILEGED"
         tools:ignore="ProtectedPermissions" />
 
     <application
@@ -34,7 +34,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Agorasim"
         tools:targetApi="31">
-
+        <activity
+            android:name=".SensorOxygen"
+            android:exported="false" />
+        <activity
+            android:name=".Settings"
+            android:exported="false"
+            android:label="@string/title_activity_settings"
+            android:theme="@style/Theme.Agorasim" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -45,27 +52,44 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Menu_escolhas" >
+        <activity android:name=".Menu_escolhas">
+
             <!-- Intent filters go here, if any -->
         </activity>
-        <activity android:name=".SensorTermoActivity" >
+        <activity android:name=".SensorTermoActivity">
+
             <!-- Intent filters go here, if any -->
         </activity>
         <activity android:name=".SensorEgcActivity">
+
             <!-- Se SensorEgcActivity é a atividade principal que inicia quando o aplicativo é lançado, descomente a seguinte linha: -->
-            <!-- <intent-filter>
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter> -->
+            </intent-filter>
+            -->
         </activity>
         <activity android:name=".SensorTensaoActivity">
+
             <!-- Se SensorEgcActivity é a atividade principal que inicia quando o aplicativo é lançado, descomente a seguinte linha: -->
-            <!-- <intent-filter>
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter> -->
+            </intent-filter>
+            -->
         </activity>
+        <activity android:name=".FinalActivity">
 
+            <!-- Se SensorEgcActivity é a atividade principal que inicia quando o aplicativo é lançado, descomente a seguinte linha: -->
+            <!--
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            -->
+        </activity>
     </application>
 
 </manifest>
