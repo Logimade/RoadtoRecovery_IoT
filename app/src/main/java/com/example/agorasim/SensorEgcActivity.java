@@ -28,11 +28,14 @@ import util.TimeOut;
 import util.Util;
 import visiomed.fr.bleframework.common.BLECenter;
 import visiomed.fr.bleframework.common.BLEContext;
+import visiomed.fr.bleframework.data.ecg.ECGExamData;
 import visiomed.fr.bleframework.data.ecg.ECGRealTimeData;
 import visiomed.fr.bleframework.device.DeviceFactory;
 import visiomed.fr.bleframework.device.GenericDevice;
 import visiomed.fr.bleframework.device.ecg.ECG;
 import visiomed.fr.bleframework.event.common.BLEDeviceStateEvent;
+import visiomed.fr.bleframework.event.common.BLEEvent;
+import visiomed.fr.bleframework.event.thermometer.ThermometerEvent;
 
 public class SensorEgcActivity extends AppCompatActivity {
 
@@ -293,4 +296,5 @@ public class SensorEgcActivity extends AppCompatActivity {
             }
         });
     }
+
 }

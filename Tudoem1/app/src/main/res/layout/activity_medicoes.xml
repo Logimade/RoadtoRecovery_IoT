@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/darker_gray"
+    tools:context=".MedicoesActivity">
+
+    <TextView
+        android:id="@+id/Medições"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:scaleX="2.5"
+        android:scaleY="2.5"
+        android:text="Medições"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <!--              Termometro  Inicio                    -->
+
+    <TextView
+        android:id="@+id/txt_data_hora"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_gravity="right"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:text="20/02/20, 14:43"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+
+    <!--                 Termometro  FIM                    -->
+
+    <!--                 Tensiometro INICIO                    -->
+
+    <!--                 Tensiometro  FIM                    -->
+
+
+    <TextView
+        android:id="@+id/txt_title_bar_Thermo"
+        android:layout_width="87dp"
+        android:layout_height="21dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="200dp"
+        android:scaleX="1.7"
+        android:scaleY="1.7"
+        android:text="Temperatura"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtEstado_Thermo"
+        android:layout_width="235dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="164dp"
+        android:gravity="center_horizontal"
+        android:scaleX="1"
+        android:scaleY="1"
+        android:text="A medir ..."
+        android:textColor="@android:color/black"
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.21"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/thermometer_activity_main_content"
+        android:layout_width="65dp"
+        android:layout_height="61dp"
+        android:layout_alignLeft="@+id/txtEstado_Thermo"
+        android:layout_alignTop="@id/txtEstado_Thermo"
+        android:layout_alignRight="@+id/txtEstado_Thermo"
+        android:layout_alignBottom="@+id/txtEstado_Thermo"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="180dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.855"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints,NotSibling">
+
+        <TextView
+            android:id="@+id/txt_thermo"
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
+            android:text="0"
+            android:textColor="@android:color/black"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="26dp"
+        android:layout_height="76dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="164dp"
+        android:layout_marginEnd="44dp"
+        android:text="ºC"
+        android:textColor="@android:color/black"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.19"
+        app:layout_constraintStart_toEndOf="@+id/thermometer_activity_main_content"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/txt_title_bar_Tensio"
+        android:layout_width="105dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="356dp"
+        android:layout_marginBottom="140dp"
+        android:scaleX="2"
+        android:scaleY="2"
+        android:text="Tensão"
+        app:layout_constraintBottom_toTopOf="@+id/txtEstado_Oxy"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.248"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/txtEstado_Tensio"
+        android:layout_width="180dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="312dp"
+        android:gravity="center_horizontal"
+        android:scaleX="1"
+        android:scaleY="1"
+        android:textColor="@android:color/black"
+        android:text="A medir ..."
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.151"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linearFundo"
+        android:layout_width="141dp"
+        android:layout_height="134dp"
+        android:layout_marginStart="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.87"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.393">
+
+
+        <!-- BONECOS DYS-->
+
+        <TextView
+            android:id="@+id/txtSYS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="30dp"
+            android:text="SYS"
+            android:textColor="@android:color/black"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="41dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="5dp"
+            android:text="mmHg"
+            android:textColor="@android:color/black"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txtSYS"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="35dp"
+            android:layout_height="16dp"
+            android:layout_marginEnd="11dp"
+            android:text="mmHg"
+            android:textColor="@android:color/black"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.575" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <TextView
+            android:id="@+id/txtDIA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="26dp"
+            android:layout_marginBottom="8dp"
+            android:text="DIA"
+            android:textColor="@android:color/black"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/valorSYS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="-- --"
+            android:textColor="@android:color/black"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.947"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+        <TextView
+            android:id="@+id/valorDIA"
+            android:layout_width="53dp"
+            android:layout_height="39dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginBottom="4dp"
+            android:gravity="right"
+            android:text="-- --"
+            android:textColor="@android:color/black"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <RelativeLayout
+            android:id="@+id/tensio_activity_main_content"
+            android:layout_width="42dp"
+            android:layout_height="39dp"
+            android:layout_alignLeft="@+id/txtEstado_Oxy"
+            android:layout_alignTop="@id/txtEstado_Oxy"
+            android:layout_alignRight="@+id/txtEstado_Oxy"
+            android:layout_alignBottom="@+id/txtEstado_Oxy"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/valorDIA"
+            tools:ignore="MissingConstraints,NotSibling,UnknownId">
+
+        </RelativeLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/txt_title_bar_Ecg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="552dp"
+        android:scaleX="2"
+        android:scaleY="2"
+        android:text="ECG"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.197"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/ecg_activity_main_content"
+        android:layout_width="107dp"
+        android:layout_height="60dp"
+        android:layout_alignLeft="@+id/txtEstado_Oxy"
+        android:layout_alignTop="@id/txtEstado_Oxy"
+        android:layout_alignRight="@+id/txtEstado_Oxy"
+        android:layout_alignBottom="@+id/txtEstado_Oxy"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="532dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.786"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints,NotSibling,UnknownIdInLayout">
+
+        <TextView
+            android:id="@+id/valorHR"
+            android:layout_width="76dp"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="-- --"
+            android:textColor="@android:color/black"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/txt_bpm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="128dp"
+        android:layout_marginEnd="22dp"
+        android:text="BPM"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.875"
+        app:layout_constraintStart_toEndOf="@+id/ecg_activity_main_content"
+        app:layout_constraintTop_toBottomOf="@+id/linearFundo" />
+
+    <TextView
+        android:id="@+id/txtEstado_Ecg"
+        android:layout_width="239dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="156dp"
+        android:gravity="center_horizontal"
+        android:text="A medir ..."
+        android:textColor="@android:color/black"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toTopOf="@+id/ecg_activity_main_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/txt_title_bar_Oxy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="692dp"
+        android:scaleX="2"
+        android:scaleY="2"
+        android:text="Oxygen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.26"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:text="%"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.853" />
+
+    <TextView
+        android:id="@+id/txtEstado_Oxy"
+        android:layout_width="236dp"
+        android:layout_height="17dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center_horizontal"
+        android:text="A medir ..."
+        android:textColor="@android:color/black"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toTopOf="@+id/txt_title_bar_Oxy"
+        app:layout_constraintEnd_toStartOf="@+id/oximeter_activity_main_content"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/oximeter_activity_main_content"
+        android:layout_width="93dp"
+        android:layout_height="79dp"
+        android:layout_alignLeft="@+id/txtEstado_Oxy"
+        android:layout_alignTop="@id/txtEstado_Oxy"
+        android:layout_alignRight="@+id/txtEstado_Oxy"
+        android:layout_alignBottom="@+id/txtEstado_Oxy"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="96dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.874"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints,NotSibling,UnknownIdInLayout">
+
+        <TextView
+            android:id="@+id/valorSP"
+            android:layout_width="88dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="1dp"
+            android:text="-- --"
+            android:textColor="@android:color/black"
+            android:textSize="36sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txt_egc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="38dp"
+            android:layout_marginEnd="32dp"
+            android:text="0"
+            android:textColor="@android:color/black"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/txtSP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="300dp"
+        android:layout_marginEnd="65dp"
+        android:layout_marginBottom="4dp"
+        android:text="SpO²"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/oximeter_activity_main_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnVoltar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginEnd="316dp"
+        android:layout_marginBottom="16dp"
+        android:text="Back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

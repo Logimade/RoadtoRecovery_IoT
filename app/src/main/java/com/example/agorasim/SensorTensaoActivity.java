@@ -18,7 +18,9 @@ import androidx.core.app.ActivityCompat;
 import com.squareup.otto.Subscribe;
 
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -344,13 +346,13 @@ public class SensorTensaoActivity extends AppCompatActivity {
                     valorDIA.setText(Integer.toString(dia));
                 }
 
-                /*
+
                 try {
                     Thread.sleep(1000);
                     //Log.d("MYINT", "value2: "+sys);
                     String frase1= Float.toString(sys);
-                    String frase2= Float.toString(sys);
-                    String msg= "S: tens:"+frase1+frase2;
+                    String frase2= Float.toString(dia);
+                    String msg= "S2: "+frase1+"(SYS)"+" "+frase2+"(DIA)";
                     socket = new Socket("100.125.148.126", 12345);
                     dos = new DataOutputStream(socket.getOutputStream());
 
@@ -361,9 +363,9 @@ public class SensorTensaoActivity extends AppCompatActivity {
 
 
 
-                } catch (IOException | InterruptedException e) {
+                } catch (InterruptedException | IOException e) {
                     throw new RuntimeException(e);
-                }*/
+                }
             }
         });
     }

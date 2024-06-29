@@ -245,6 +245,7 @@ public class SensorTermoActivity extends AppCompatActivity {
                 }
                 //UNCOMMENT TO CONNECT TO SOCKET_SERVER
 
+                /*
                 try {
                     Thread.sleep(1000);
                     Log.d("MYINT", "value2: "+temperatura);
@@ -264,6 +265,7 @@ public class SensorTermoActivity extends AppCompatActivity {
                 } catch (IOException | InterruptedException e) {
                     throw new RuntimeException(e);
             }
+                */
             }
         });
     }
