@@ -209,16 +209,16 @@ public class MedicoesActivity extends AppCompatActivity {
         super.onResume();
 
         timeOut = new TimeOut(this);
-        txtEstado_Thermo.setText("A encontrar dispositivo ...");
+        txtEstado_Thermo.setText("Searching for sensor");
         showLoading_Thermo();
 
-        txtEstado_Tensio.setText("A encontrar dispositivo ...");
+        txtEstado_Tensio.setText("Searching for sensor");
         showLoading_Tensio();
 
-        txtEstado_Ecg.setText("A encontrar dispositivo ...");
+        txtEstado_Ecg.setText("Searching for sensor");
         showLoading_Ecg();
 
-        txtEstado_Oxy.setText("A encontrar dispositivo ...");
+        txtEstado_Oxy.setText("Searching for sensor");
         showLoading_Oxy();
 
         txt_data_hora.setText(Util.currentDataTime());
@@ -278,7 +278,7 @@ public class MedicoesActivity extends AppCompatActivity {
                     if (temperatura < 32 || temperatura > 43) {
                         flagTemp = 1;
                         temperatura = 1F;
-                        txtEstado_Thermo.setText("A encontrar dispositivo ...");
+                        txtEstado_Thermo.setText("Searching for sensor");
                         startLEScan_Thermo();
 
                     } else {
@@ -377,7 +377,7 @@ public class MedicoesActivity extends AppCompatActivity {
                                 txtEstado_Thermo.setText("Medição realizada");
                             }
                             startLEScan_Thermo();
-                            txtEstado_Thermo.setText("A encontrar dispositivo ...");
+                            txtEstado_Thermo.setText("Searching for sensor");
 
 
                         } else {
@@ -904,7 +904,7 @@ public class MedicoesActivity extends AppCompatActivity {
                         if ((pulse < 0 || oxygenContent < 0)) {
                             showLoading_Oxy();
                             startLEScan_Oxy();
-                            txtEstado_Oxy.setText("A encontrar dispositivo ...");
+                            txtEstado_Oxy.setText("Searching for sensor");
 
                         } else {
                             hideLoading_Oxy();

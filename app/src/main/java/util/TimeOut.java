@@ -3,7 +3,7 @@ package util;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
-import com.example.agorasim.MainActivity;
+import com.example.tudoem1.MainActivity;
 
 public class TimeOut {
 

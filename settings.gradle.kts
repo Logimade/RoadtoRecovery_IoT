@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "agorasim"
+rootProject.name = "Tudoem1"
 include(":app")
  
