@@ -18,7 +18,7 @@ const val WRITE_TIMEOUT = "WRITE_TIMEOUT"
 interface retrofitInterface {
 
     @POST("road-to-recovery/network/measures")
-    fun postData(@Body postData: PostData?): Call<Any>
+    fun postData(@Body post_data: PostData?): Call<Any>
 
     companion object {
 

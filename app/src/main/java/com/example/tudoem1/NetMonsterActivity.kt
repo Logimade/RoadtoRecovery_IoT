@@ -32,6 +32,7 @@ import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.LocationSettingsResponse
 import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.tasks.Task
+import com.google.gson.Gson
 import cz.mroczis.netmonster.core.db.model.NetworkType
 import cz.mroczis.netmonster.core.factory.NetMonsterFactory
 import cz.mroczis.netmonster.core.feature.detect.DetectorHspaDc
@@ -168,7 +169,7 @@ class NetMonsterActivity : AppCompatActivity() {
             val postData = PostData(listOf(measure))
             Log.d("data", "$postData")
 
-//            postDataToServer(postData)
+            postDataToServer(postData)
 //            Log.d("NTM-Subset", " \n${subset.joinToString(separator = "\n")}")
             // All detectors that are bundled in NetMonster Core
             val networkType : NetworkType = getNetworkType(0)
@@ -238,6 +239,10 @@ class NetMonsterActivity : AppCompatActivity() {
     }
 
     private fun postDataToServer(postData: PostData) {
+
+        val jsonPayload = Gson().toJson(postData)
+        Log.d("RetrofitPayload", jsonPayload)
+
         val call = retrofitInterface().postData(postData)
         call.enqueue(object : Callback<Any> {
             override fun onResponse(call: Call<Any>, response: Response<Any>) {
