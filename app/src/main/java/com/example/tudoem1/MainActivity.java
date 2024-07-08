@@ -22,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Button btnSettings;
     private Button btnStart;
+
+    private Button btnNetwork;
     private static final int REQUEST_CODE_BLUETOOTH_SCAN = 101;
 
     @Override
@@ -40,12 +42,22 @@ public class MainActivity extends AppCompatActivity {
 
         btnStart = findViewById(R.id.btnStart);
         btnSettings = findViewById(R.id.btnSettings);
+        btnNetwork = findViewById(R.id.btnNetwork);
 
 
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, MedicoesActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        btnNetwork.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, NetMonsterActivity.class);
                 startActivity(intent);
                 finish();
             }
