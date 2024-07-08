@@ -17,7 +17,7 @@ const val WRITE_TIMEOUT = "WRITE_TIMEOUT"
 
 interface retrofitInterface {
 
-    @POST("your_endpoint_here")
+    @POST("road-to-recovery/network/measures")
     fun postData(@Body postData: PostData?): Call<Any>
 
     companion object {
@@ -58,7 +58,9 @@ interface retrofitInterface {
             .addInterceptor(interceptor)
             .build()
 
-        private var BASE_URL = "https://tidycity.logimade.pt/server/api/"
+//        private var BASE_URL = "https://tidycity.logimade.pt/server/api/"
+        private var BASE_URL = "https://3e8a45907f206024d552541b0862719e.serveo.net/"
+
 
         operator fun invoke(): retrofitInterface {
             return Retrofit.Builder()
