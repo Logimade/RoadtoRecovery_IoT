@@ -2,6 +2,7 @@ package com.example.tudoem1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -15,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.example.tudoem1.gpsUtils.GPService;
 
 import util.Util;
 
@@ -57,6 +60,12 @@ public class MainActivity extends AppCompatActivity {
         btnNetwork.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if (checkGpsStatus()) {
+                    Intent i = new Intent(getApplicationContext(), GPService.class);
+                    startService(i);
+                }
+
                 Intent intent = new Intent(MainActivity.this, NetMonsterActivity.class);
                 startActivity(intent);
                 finish();
@@ -93,4 +102,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private boolean checkGpsStatus() {
+        LocationManager locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
 }

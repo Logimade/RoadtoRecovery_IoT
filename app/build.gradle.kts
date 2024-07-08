@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.tudoem1"
-        minSdk = 29
+        minSdk = 23
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -64,5 +64,13 @@ dependencies {
 
     // netmonster
     implementation("app.netmonster:core:1.3.0")
+
+    // gps
+    implementation("com.google.android.gms:play-services-basement:18.4.0")
+    implementation("com.google.android.gms:play-services-location:21.3.0")
+
+    // retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
 
 }
