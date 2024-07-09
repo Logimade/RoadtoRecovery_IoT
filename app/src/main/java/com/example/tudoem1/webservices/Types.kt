@@ -2,8 +2,8 @@ package com.example.tudoem1.webservices
 
 // Coordinates.kt
 data class Coordinates(
-    val lat: Double,
-    val long: Double
+    var lat: Double,
+    var long: Double
 )
 
 // Measure.kt

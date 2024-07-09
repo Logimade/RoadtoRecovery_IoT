@@ -59,7 +59,7 @@ interface retrofitInterface {
             .build()
 
 //        private var BASE_URL = "https://tidycity.logimade.pt/server/api/"
-        private var BASE_URL = "https://3e8a45907f206024d552541b0862719e.serveo.net/"
+        private var BASE_URL = "https://cfdb9b85beb9f0bb1830a7baed727b56.serveo.net/"
 
 
         operator fun invoke(): retrofitInterface {

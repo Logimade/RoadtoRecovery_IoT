@@ -18,11 +18,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.os.postDelayed
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tudoem1.NetMonsterActivity.Companion.REFRESH_RATIO
-import com.example.tudoem1.gpsUtils.Types
+import com.example.tudoem1.databaseUtils.DatabasePrototype
+import com.example.tudoem1.databaseUtils.MeasureStructure
+import com.example.tudoem1.databaseUtils.MetricStructure
 import com.example.tudoem1.webservices.Coordinates
-import com.example.tudoem1.webservices.Measure
 import com.example.tudoem1.webservices.PostData
 import com.example.tudoem1.webservices.retrofitInterface
 import com.google.android.gms.common.api.ResolvableApiException
@@ -37,15 +39,17 @@ import cz.mroczis.netmonster.core.db.model.NetworkType
 import cz.mroczis.netmonster.core.factory.NetMonsterFactory
 import cz.mroczis.netmonster.core.feature.detect.DetectorHspaDc
 import cz.mroczis.netmonster.core.feature.detect.DetectorLteAdvancedCellInfo
-import cz.mroczis.netmonster.core.feature.detect.DetectorLteAdvancedNrDisplayInfo
 import cz.mroczis.netmonster.core.feature.detect.DetectorLteAdvancedNrServiceState
 import cz.mroczis.netmonster.core.feature.detect.DetectorLteAdvancedPhysicalChannel
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
+import cz.mroczis.netmonster.core.model.nr.NrNsaState
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+import java.util.UUID
 
 /**
  * Activity periodically updates data (once in [REFRESH_RATIO] ms) when it's on foreground.
@@ -56,10 +60,17 @@ class NetMonsterActivity : AppCompatActivity() {
         private const val REFRESH_RATIO = 1_000L
     }
 
+    private val db by lazy {
+        DatabasePrototype.getDatabase(
+            this
+        )
+    }
+
+    private lateinit var measureId: UUID
     private val handler = Handler(Looper.getMainLooper())
     private val adapter = MainAdapter()
     private lateinit var recyclerView: RecyclerView
-    private var locationCoordinates = Types.DbCoordinates(0.0,0.0)
+    private var locationCoordinates = Coordinates(0.0, 0.0)
     private var broadcastReceiver: BroadcastReceiver? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,6 +93,18 @@ class NetMonsterActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+
+        measureId = UUID.randomUUID()
+        lifecycleScope.launch {
+            db.daoNetworkMethods().insertMeasure(
+                measure = MeasureStructure(
+                    id = measureId,
+                    startDate = getCurrentDateTime(),
+                    coordinatesStart = locationCoordinates
+                )
+            )
+        }
+
     }
 
     private val gpsSwitchStateReceiver: BroadcastReceiver = object : BroadcastReceiver() {
@@ -89,7 +112,7 @@ class NetMonsterActivity : AppCompatActivity() {
             if (LocationManager.PROVIDERS_CHANGED_ACTION == intent.action) {
                 val locationManager = context.getSystemService(LOCATION_SERVICE) as LocationManager
                 val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-                if (!isGpsEnabled ){
+                if (!isGpsEnabled) {
                     enableGPS()
                 }
             }
@@ -101,7 +124,11 @@ class NetMonsterActivity : AppCompatActivity() {
         val filter = IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION)
         filter.addAction(Intent.ACTION_PROVIDER_CHANGED)
 
-        registerReceiver(gpsSwitchStateReceiver, filter, )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerReceiver(gpsSwitchStateReceiver, filter, RECEIVER_EXPORTED)
+        } else {
+            registerReceiver(gpsSwitchStateReceiver, filter, RECEIVER_NOT_EXPORTED)
+        }
 
 
         if (broadcastReceiver == null) {
@@ -114,11 +141,13 @@ class NetMonsterActivity : AppCompatActivity() {
                 }
             }
         }
-        registerReceiver(broadcastReceiver, IntentFilter("location_update"))
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-//            registerReceiver(broadcastReceiver, IntentFilter("location_update"), RECEIVER_EXPORTED)
-//        }
-//
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(broadcastReceiver, IntentFilter("location_update"), RECEIVER_EXPORTED)
+        } else {
+            registerReceiver(broadcastReceiver, IntentFilter("location_update"))
+
+        }
+
         if (ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_COARSE_LOCATION
@@ -141,6 +170,13 @@ class NetMonsterActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         handler.removeCallbacksAndMessages(null)
+        lifecycleScope.launch {
+            db.daoNetworkMethods().updateMeasure(
+                key = measureId,
+                endMeasure = getCurrentDateTime(),
+                coordinatesStopped = locationCoordinates
+            )
+        }
     }
 
     private fun loop() {
@@ -161,39 +197,57 @@ class NetMonsterActivity : AppCompatActivity() {
 //            )
 //            adapter.data = subset
             Log.d("NTM-RES", " \n${merged.joinToString(separator = "\n")}")
+            lifecycleScope.launch {
+                db.daoNetworkMethods().insertMetric(
+                    metric =
+                    MetricStructure(
+                        timeStamp = getCurrentDateTime(),
+                        measureId = measureId,
+                        coordinates = locationCoordinates,
+                        metrics = merged.joinToString(separator = "\n")
+                    )
+                )
+            }
 
+//            val metrics = merged.joinToString(separator = "\n")
+//            val coordinates = Coordinates(locationCoordinates.lat, locationCoordinates.long)
+//            val measure = Measure(getCurrentDateTime(), coordinates, metrics)
+//            val postData = PostData(listOf(measure))
+//            Log.d("data", "$postData")
 
-            val metrics = merged.joinToString(separator = "\n")
-            val coordinates = Coordinates(locationCoordinates.lat, locationCoordinates.long)
-            val measure = Measure(getCurrentDateTime(), coordinates, metrics)
-            val postData = PostData(listOf(measure))
-            Log.d("data", "$postData")
-
-            postDataToServer(postData)
+//            postDataToServer(postData)
 //            Log.d("NTM-Subset", " \n${subset.joinToString(separator = "\n")}")
             // All detectors that are bundled in NetMonster Core
-            val networkType : NetworkType = getNetworkType(0)
+            val networkType: NetworkType = getNetworkType(0)
             Log.d("NetworkType", " $networkType")
             // Only HSPA+42 (guess, not from RIL)
             val isHspaDc: NetworkType? = getNetworkType(0, DetectorHspaDc())
-            Log.d("NetworkType", " $isHspaDc")
+            Log.d("isHspaDc", " $isHspaDc")
             // LTE-A from CellInfo (guess, not from RIL), NSA NR
             val isLteCaCellInfo: NetworkType? = getNetworkType(0, DetectorLteAdvancedCellInfo())
-            Log.d("NetworkType", " $isLteCaCellInfo")
+            Log.d("isLteCaCellInfo", " $isLteCaCellInfo")
             // LTE-A from ServiceState (from RIL, Android P+)
-            val isLteCaServiceState: NetworkType? = getNetworkType(0, DetectorLteAdvancedNrServiceState())
-            Log.d("NetworkType", " $isLteCaServiceState")
+            val isLteCaServiceState: NetworkType? =
+                getNetworkType(0, DetectorLteAdvancedNrServiceState())
+            Log.d("isLteCaServiceState", " $isLteCaServiceState")
 
             // LTE-A from PhysicalChannel (from RIL, Android P+)
-            val isLteCaPhysicalChannel: NetworkType? = getNetworkType(0, DetectorLteAdvancedPhysicalChannel())
-            Log.d("NetworkType", " $isLteCaPhysicalChannel")
+            val isLteCaPhysicalChannel: NetworkType? =
+                getNetworkType(0, DetectorLteAdvancedPhysicalChannel())
+            Log.d("isLteCaPhysicalChannel", " $isLteCaPhysicalChannel")
 
             // LTE-A and NR from DisplayInfo (marketing purposes, might result false-positive data, Android R+)
             // You can also detect only LTE-A or NR using one of classes:
             // - DetectorLteAdvancedServiceState ... for LTE-A
             // - DetectorNsaNr ... for NR NSA
-            val isLteCaOrNsaNrDisplayInfo: NetworkType? = getNetworkType(0, DetectorLteAdvancedNrDisplayInfo())
-            Log.d("NetworkType", " $isLteCaOrNsaNrDisplayInfo")
+            val networkType1: NetworkType =
+                NetMonsterFactory.get(this@NetMonsterActivity).getNetworkType(0)
+            if (networkType1 is NetworkType.Nr.Nsa) {
+                val state: NrNsaState =
+                    networkType1.nrNsaState // For more info refer to NrNsaState class
+                Log.d("NetworkType1", " $state")
+            }
+
 
         }
     }

@@ -13,21 +13,19 @@ import android.os.Build;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.room.Database;
 
+import com.example.tudoem1.databaseUtils.DatabasePrototype;
 import com.example.tudoem1.gpsUtils.GPService;
 
 import util.Util;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button btnSettings;
-    private Button btnStart;
-
-    private Button btnNetwork;
     private static final int REQUEST_CODE_BLUETOOTH_SCAN = 101;
+    private DatabasePrototype db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +41,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        btnStart = findViewById(R.id.btnStart);
-        btnSettings = findViewById(R.id.btnSettings);
-        btnNetwork = findViewById(R.id.btnNetwork);
+        Button btnStart = findViewById(R.id.btnStart);
+        Button btnSettings = findViewById(R.id.btnSettings);
+        Button btnNetwork = findViewById(R.id.btnNetwork);
 
 
         btnStart.setOnClickListener(new View.OnClickListener() {
@@ -99,6 +97,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         //TempDataStore temp = new TempDataStore();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+//        db = DatabasePrototype.Companion.getDatabase(this);
+//        List<MeasureStructure> measuresToUpload = db.daoNetworkMethods().getMeasuresToUpload();
+//        Log.d("metrics", measuresToUpload.toString());
 
     }
 
