@@ -1,4 +1,4 @@
-package com.example.tudoem1.gpsUtils
+package com.example.tudoem1.services
 
 import android.Manifest
 import android.annotation.SuppressLint

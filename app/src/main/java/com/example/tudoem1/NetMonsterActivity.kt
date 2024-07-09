@@ -73,6 +73,17 @@ class NetMonsterActivity : AppCompatActivity() {
     private var locationCoordinates = Coordinates(0.0, 0.0)
     private var broadcastReceiver: BroadcastReceiver? = null
 
+    private val dataReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent?.action == NetMonsterService.ACTION_DATA_UPDATED) {
+                val metrics = intent.getStringExtra(NetMonsterService.EXTRA_METRICS)
+                // Handle the received metrics data in your activity
+                Log.d("NetMonsterActivity", "Received metrics: $metrics")
+                // Update your UI or perform any necessary actions with the received data
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_netmonster)
@@ -104,6 +115,9 @@ class NetMonsterActivity : AppCompatActivity() {
                 )
             )
         }
+
+        val filter = IntentFilter(NetMonsterService.ACTION_DATA_UPDATED)
+        registerReceiver(dataReceiver, filter)
 
     }
 

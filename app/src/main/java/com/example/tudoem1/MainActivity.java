@@ -15,10 +15,9 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.room.Database;
 
 import com.example.tudoem1.databaseUtils.DatabasePrototype;
-import com.example.tudoem1.gpsUtils.GPService;
+import com.example.tudoem1.services.GPService;
 
 import util.Util;
 
