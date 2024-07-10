@@ -34,15 +34,16 @@ class UploadService : IntentService("UploadService") {
             serviceScope.launch {
                 dataToUpload = db.daoNetworkMethods().getMeasuresToUpload()
 
-                if (dataToUpload.isNotEmpty()) {
-                    dataToUpload.forEach {
-                        postData = PostData(
-                            acquisition = it.acquisition,
-                            measures = metricStructureListToMeasureList(it.metrics)
-                        )
-                    }
+                if (dataToUpload.isEmpty()) {
+                    return@launch
                 }
 
+                dataToUpload.forEach {
+                    postData = PostData(
+                        acquisition = it.acquisition,
+                        measures = metricStructureListToMeasureList(it.metrics)
+                    )
+                }
                 val jsonPayload = Gson().toJson(postData)
                 Log.d("RetrofitPayload", jsonPayload)
 
