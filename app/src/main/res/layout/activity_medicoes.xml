@@ -7,42 +7,29 @@
     android:background="@android:color/darker_gray"
     tools:context=".MedicoesActivity">
 
-    <TextView
-        android:id="@+id/txt_data_hora"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_gravity="right"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="16dp"
-        android:text="20/02/20, 14:43"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+<!--    <TextView-->
+<!--        android:id="@+id/txt_data_hora"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="20dp"-->
+<!--        android:layout_gravity="right"-->
+<!--        android:layout_marginTop="4dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:text="20/02/20, 14:43"-->
+<!--        android:textColor="@android:color/black"-->
+<!--        android:textSize="18sp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        tools:ignore="MissingConstraints" />-->
 
 
     <TextView
         android:id="@+id/Medições"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:scaleX="2.5"
-        android:scaleY="2.5"
+        android:layout_marginTop="32dp"
         android:text="Biosensors"
+        android:textSize="48sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <TextView
-        android:id="@+id/txt_title_bar_Thermo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="200dp"
-        android:textSize="26sp"
-        android:text="Temperatura"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,8 +39,6 @@
         android:layout_height="18dp"
         android:layout_marginTop="164dp"
         android:gravity="center_horizontal"
-        android:scaleX="1"
-        android:scaleY="1"
         android:text="A medir ..."
         android:textColor="@android:color/black"
         android:textSize="11sp"
@@ -61,70 +46,61 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <RelativeLayout
-        android:id="@+id/thermometer_activity_main_content"
+    <TextView
+        android:id="@+id/txt_title_bar_Thermo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/txtEstado_Thermo"
-        android:layout_alignTop="@id/txtEstado_Thermo"
-        android:layout_alignRight="@+id/txtEstado_Thermo"
-        android:layout_alignBottom="@+id/txtEstado_Thermo"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="180dp"
-        android:gravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/txt_thermo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0ºC"
-            android:textColor="@android:color/black"
-            android:textSize="40sp"
-            android:textStyle="bold" />
-    </RelativeLayout>
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:textSize="26sp"
+        android:text="Temperature"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtEstado_Thermo"/>
 
     <TextView
-        android:id="@+id/txt_title_bar_Tensio"
+        android:id="@+id/txt_thermo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
-        android:layout_marginBottom="140dp"
-        android:text="Tensão"
-        app:layout_constraintBottom_toTopOf="@+id/txtEstado_Oxy"
-        app:layout_constraintStart_toStartOf="@+id/txt_title_bar_Thermo"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="0ºC"
+        android:textColor="@android:color/black"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/txt_title_bar_Thermo"
+        />
+
 
     <TextView
         android:id="@+id/txtEstado_Tensio"
         android:layout_width="180dp"
         android:layout_height="20dp"
-        android:layout_marginTop="312dp"
+        android:layout_marginTop="32dp"
         android:gravity="center_horizontal"
-        android:scaleX="1"
-        android:scaleY="1"
         android:textColor="@android:color/black"
         android:text="A medir ..."
         android:textSize="11sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.151"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_title_bar_Thermo" />
+
+    <TextView
+        android:id="@+id/txt_title_bar_Tensio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="26sp"
+        android:text="Blood Pressure"
+        app:layout_constraintTop_toBottomOf="@+id/txtEstado_Tensio"
+        app:layout_constraintStart_toStartOf="@+id/txt_title_bar_Thermo" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearFundo"
-        android:layout_width="141dp"
+        android:layout_width="wrap_content"
         android:layout_height="134dp"
-        android:layout_marginStart="8dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.87"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.393">
+        app:layout_constraintBaseline_toBaselineOf="@+id/txt_title_bar_Tensio">
 
 
         <!-- BONECOS DYS-->
@@ -169,12 +145,12 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.575" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.05" />
+<!--        <androidx.constraintlayout.widget.Guideline-->
+<!--            android:id="@+id/guideline"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            app:layout_constraintGuide_percent="0.05" />-->
 
         <TextView
             android:id="@+id/txtDIA"
@@ -217,23 +193,23 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <RelativeLayout
-            android:id="@+id/tensio_activity_main_content"
-            android:layout_width="42dp"
-            android:layout_height="39dp"
-            android:layout_alignLeft="@+id/txtEstado_Oxy"
-            android:layout_alignTop="@id/txtEstado_Oxy"
-            android:layout_alignRight="@+id/txtEstado_Oxy"
-            android:layout_alignBottom="@+id/txtEstado_Oxy"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="16dp"
-            android:gravity="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/valorDIA"
-            tools:ignore="MissingConstraints,NotSibling,UnknownId">
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/tensio_activity_main_content"-->
+<!--            android:layout_width="42dp"-->
+<!--            android:layout_height="39dp"-->
+<!--            android:layout_alignLeft="@+id/txtEstado_Oxy"-->
+<!--            android:layout_alignTop="@id/txtEstado_Oxy"-->
+<!--            android:layout_alignRight="@+id/txtEstado_Oxy"-->
+<!--            android:layout_alignBottom="@+id/txtEstado_Oxy"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:layout_marginEnd="20dp"-->
+<!--            android:layout_marginBottom="16dp"-->
+<!--            android:gravity="center"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/valorDIA"-->
+<!--            tools:ignore="MissingConstraints,NotSibling,UnknownId">-->
 
-        </RelativeLayout>
+<!--        </RelativeLayout>-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
