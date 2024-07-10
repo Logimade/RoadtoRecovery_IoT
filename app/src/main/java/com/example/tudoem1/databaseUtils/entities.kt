@@ -29,10 +29,10 @@ data class MetricStructure(
 
 @Entity
 data class MeasureWithMetrics(
-    @Embedded val video: MeasureStructure,
+    @Embedded val acquisition: MeasureStructure,
     @Relation(
         parentColumn = "id",
         entityColumn = "measureId",
     )
-    val frames: List<MetricStructure>
+    val metrics: List<MetricStructure>
 )

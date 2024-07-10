@@ -1,5 +1,6 @@
 package com.example.tudoem1;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -10,7 +11,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -29,19 +29,19 @@ import util.TimeOut;
 import util.Util;
 import visiomed.fr.bleframework.common.BLECenter;
 import visiomed.fr.bleframework.common.BLEContext;
-import visiomed.fr.bleframework.data.thermometer.ThermometerData;
-import visiomed.fr.bleframework.data.ecg.ECGRealTimeData;
 import visiomed.fr.bleframework.data.bpm.BPMData;
+import visiomed.fr.bleframework.data.ecg.ECGRealTimeData;
+import visiomed.fr.bleframework.data.thermometer.ThermometerData;
 import visiomed.fr.bleframework.device.BloodPressureMonitor;
-import visiomed.fr.bleframework.device.ecg.ECG;
 import visiomed.fr.bleframework.device.DeviceFactory;
 import visiomed.fr.bleframework.device.GenericDevice;
+import visiomed.fr.bleframework.device.Oximeter;
 import visiomed.fr.bleframework.device.Thermometer;
+import visiomed.fr.bleframework.device.ecg.ECG;
 import visiomed.fr.bleframework.event.bpm.BPMMeasurementEvent;
 import visiomed.fr.bleframework.event.bpm.BPMStateEvent;
-import visiomed.fr.bleframework.event.common.BLEEvent;
-import visiomed.fr.bleframework.device.Oximeter;
 import visiomed.fr.bleframework.event.common.BLEDeviceStateEvent;
+import visiomed.fr.bleframework.event.common.BLEEvent;
 import visiomed.fr.bleframework.event.oximeter.OximeterEvent;
 import visiomed.fr.bleframework.event.thermometer.ThermometerEvent;
 
@@ -50,10 +50,17 @@ public class MedicoesActivity extends AppCompatActivity {
 
     int tickCount = 0;
     private String mac;
-    private TextView txt_thermo, titulo_Thermo, txtEstado_Thermo, txt_data_hora;
-    private TextView titulo_Tensio, valorSYS, valorDIA, txtEstado_Tensio;
-    private TextView titulo_Ecg, txt_egc, valorHR, txtEstado_Ecg;
-    private TextView titulo_Oxy, txtSP, txtEstado_Oxy, valorFC, valorSP ;
+    private TextView txt_thermo;
+    private TextView txtEstado_Thermo;
+    private TextView txt_data_hora;
+    private TextView valorSYS;
+    private TextView valorDIA;
+    private TextView txtEstado_Tensio;
+    private TextView valorHR;
+    private TextView txtEstado_Ecg;
+    private TextView txtEstado_Oxy;
+    private TextView valorSP;
+    private TextView valorFC;
     private BLECenter bleCenter;
     private Thermometer thermometer;
     private BloodPressureMonitor bpm;
@@ -61,7 +68,6 @@ public class MedicoesActivity extends AppCompatActivity {
     private ECG ecg;
     private TimeOut timeOut;
     private MedicoesActivity self;
-    private Button btnVoltar;
     private ProgressBar progressBar;
     private static Float temperatura = 0.0F;
     private int oxygenContent = -1;
@@ -70,7 +76,6 @@ public class MedicoesActivity extends AppCompatActivity {
     private int HR;
     private Timer timer;
     private int flagTemp = 0;
-
     public String ip1;
 
     @Override
@@ -80,11 +85,10 @@ public class MedicoesActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        Util.fullscreen(this);
 
-        btnVoltar = findViewById(R.id.btnVoltar);
+        Button btnVoltar = findViewById(R.id.btnVoltar);
 
-        ip1= getIntent().getStringExtra("Ip_text");
+        ip1 = getIntent().getStringExtra("Ip_text");
 
 
         timer = new Timer();
@@ -102,13 +106,10 @@ public class MedicoesActivity extends AppCompatActivity {
 
         timer.schedule(myTask, 1000, 1000);
 
-        btnVoltar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MedicoesActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        btnVoltar.setOnClickListener(view -> {
+            Intent intent = new Intent(MedicoesActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
         });
 
 
@@ -122,29 +123,29 @@ public class MedicoesActivity extends AppCompatActivity {
 
     private void initParams() {
 
-        titulo_Thermo = findViewById(R.id.txt_title_bar_Thermo);
+        TextView titulo_Thermo = findViewById(R.id.txt_title_bar_Thermo);
         titulo_Thermo.setText(getString(R.string.termometro));
         txt_thermo = findViewById(R.id.txt_thermo);
         txtEstado_Thermo = findViewById(R.id.txtEstado_Thermo);
 
-        titulo_Tensio = findViewById(R.id.txt_title_bar_Tensio);
+        TextView titulo_Tensio = findViewById(R.id.txt_title_bar_Tensio);
         titulo_Tensio.setText(getString(R.string.tensiometro));
         valorSYS = findViewById(R.id.valorSYS);
         valorDIA = findViewById(R.id.valorDIA);
         txtEstado_Tensio = findViewById(R.id.txtEstado_Tensio);
 
-        titulo_Ecg = findViewById(R.id.txt_title_bar_Ecg);
+        TextView titulo_Ecg = findViewById(R.id.txt_title_bar_Ecg);
         titulo_Ecg.setText(getString(R.string.egc));
-        txt_egc = findViewById(R.id.txt_egc);
+        TextView txt_egc = findViewById(R.id.txt_egc);
         txtEstado_Ecg = findViewById(R.id.txtEstado_Ecg);
         valorHR = findViewById(R.id.valorHR);
 
-        titulo_Oxy = findViewById(R.id.txt_title_bar_Oxy);
+        TextView titulo_Oxy = findViewById(R.id.txt_title_bar_Oxy);
         titulo_Oxy.setText(getString(R.string.oximetro));
         valorSP = findViewById(R.id.valorSP);
         txtEstado_Oxy = findViewById(R.id.txtEstado_Oxy);
 
-        txtSP = findViewById(R.id.txtSP);
+        TextView txtSP = findViewById(R.id.txtSP);
 
         final String s = "SpO₂";
         txtSP.setText(s);
@@ -193,13 +194,12 @@ public class MedicoesActivity extends AppCompatActivity {
                     }
                 }
 
-                if (!check) {
-                    Thread.interrupted();
-                }
+                Thread.interrupted();
             }
         }).start();
 
     }
+
     private void stopLEScan_Thermo() {
         bleCenter.stopBLEScan();
     }
@@ -292,8 +292,8 @@ public class MedicoesActivity extends AppCompatActivity {
                 try {
                     Thread.sleep(1000);
                     //Log.d("MYINT", "value2: "+temperatura);
-                    String frase= Float.toString(temperatura);
-                    String msg= "S1: "+frase;
+                    String frase = Float.toString(temperatura);
+                    String msg = "S1: " + frase;
                     //String str = String.valueOf(temperatura);
                     socket = new Socket(ip1, 12345);
                     dos = new DataOutputStream(socket.getOutputStream());
@@ -304,10 +304,9 @@ public class MedicoesActivity extends AppCompatActivity {
                     socket.close();
 
 
-
                 } catch (IOException | InterruptedException e) {
                     throw new RuntimeException(e);
-            }
+                }
 
             }
         });
@@ -443,7 +442,6 @@ public class MedicoesActivity extends AppCompatActivity {
     private void stopLEScan_Tensio() {
         bleCenter.stopBLEScan();
     }
-
 
 
     private void showLoading_Tensio() {
@@ -587,9 +585,9 @@ public class MedicoesActivity extends AppCompatActivity {
                 try {
                     Thread.sleep(1000);
                     //Log.d("MYINT", "value2: "+sys);
-                    String frase1= Float.toString(sys);
-                    String frase2= Float.toString(dia);
-                    String msg= "S2: "+frase1+"(SYS)"+" "+frase2+"(DIA)";
+                    String frase1 = Float.toString(sys);
+                    String frase2 = Float.toString(dia);
+                    String msg = "S2: " + frase1 + "(SYS)" + " " + frase2 + "(DIA)";
                     socket = new Socket(ip1, 12345);
                     dos = new DataOutputStream(socket.getOutputStream());
 
@@ -597,7 +595,6 @@ public class MedicoesActivity extends AppCompatActivity {
                     dos.close();
                     dos.flush();
                     socket.close();
-
 
 
                 } catch (IOException | InterruptedException e) {
@@ -655,6 +652,7 @@ public class MedicoesActivity extends AppCompatActivity {
         }).start();
 
     }
+
     private void stopLEScan_Ecg() {
         bleCenter.stopBLEScan();
     }
@@ -709,8 +707,8 @@ public class MedicoesActivity extends AppCompatActivity {
                 try {
                     Thread.sleep(1000);
                     //Log.d("MYINT", "value2: "+temperatura);
-                    String frase= Float.toString(HR);
-                    String msg= "S3: "+frase;
+                    String frase = Float.toString(HR);
+                    String msg = "S3: " + frase;
                     //String str = String.valueOf(temperatura);
                     socket = new Socket(ip1, 12345);
                     dos = new DataOutputStream(socket.getOutputStream());
@@ -719,7 +717,6 @@ public class MedicoesActivity extends AppCompatActivity {
                     dos.close();
                     dos.flush();
                     socket.close();
-
 
 
                 } catch (IOException | InterruptedException e) {
@@ -799,6 +796,7 @@ public class MedicoesActivity extends AppCompatActivity {
 
 
     }
+
     private void stopLEScan_Oxy() {
         bleCenter.stopBLEScan();
     }
@@ -821,15 +819,14 @@ public class MedicoesActivity extends AppCompatActivity {
                     valorFC.setText(Integer.toString(pulse));
                     valorSP.setText(Integer.toString(oxygenContent));
 
-                    Util.fullscreen(MedicoesActivity.this);
                     txtEstado_Oxy.setText(R.string.sucesso_medicao);
 
                     try {
                         Thread.sleep(1000);
                         //Log.d("MYINT", "value2: "+sys);
-                        String frase1= Float.toString(pulse);
-                        String frase2= Float.toString(oxygenContent);
-                        String msg= "S4: "+frase1+frase2;
+                        String frase1 = Float.toString(pulse);
+                        String frase2 = Float.toString(oxygenContent);
+                        String msg = "S4: " + frase1 + frase2;
                         socket = new Socket(ip1, 12345);
                         dos = new DataOutputStream(socket.getOutputStream());
 
@@ -837,7 +834,6 @@ public class MedicoesActivity extends AppCompatActivity {
                         dos.close();
                         dos.flush();
                         socket.close();
-
 
 
                     } catch (IOException | InterruptedException e) {

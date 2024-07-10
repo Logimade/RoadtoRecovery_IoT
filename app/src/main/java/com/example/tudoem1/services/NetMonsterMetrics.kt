@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
-import android.location.LocationManager
 import android.os.Build
 import android.os.Handler
 import android.os.IBinder
@@ -18,7 +17,6 @@ import androidx.core.content.ContextCompat
 import com.example.tudoem1.databaseUtils.DatabasePrototype
 import com.example.tudoem1.databaseUtils.MetricStructure
 import com.example.tudoem1.webservices.Coordinates
-import com.google.gson.Gson
 import cz.mroczis.netmonster.core.factory.NetMonsterFactory
 import cz.mroczis.netmonster.core.model.cell.ICell
 import kotlinx.coroutines.CoroutineScope

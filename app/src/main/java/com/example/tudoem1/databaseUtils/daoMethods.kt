@@ -23,7 +23,7 @@ interface NetworkMethods {
 
     @Transaction
     @Query("SELECT * FROM MeasureStructure WHERE uploaded=0")
-    suspend fun getMeasuresToUpload(): List<MeasureStructure>
+    suspend fun getMeasuresToUpload(): List<MeasureWithMetrics>
 
     @Query("UPDATE MeasureStructure SET endDate=:endMeasure, coordinatesEnd=:coordinatesStopped WHERE id=:key")
     suspend fun updateMeasure(key:UUID, endMeasure:String, coordinatesStopped: Coordinates)

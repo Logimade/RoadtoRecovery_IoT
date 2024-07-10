@@ -18,7 +18,6 @@ import androidx.core.content.ContextCompat;
 
 import com.example.tudoem1.databaseUtils.DatabasePrototype;
 import com.example.tudoem1.services.GPService;
-import com.example.tudoem1.services.NetMonsterService;
 
 import util.Util;
 
