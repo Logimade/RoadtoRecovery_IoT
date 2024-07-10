@@ -38,11 +38,6 @@
         <activity
             android:name=".AllMeasuresActivity"
             android:exported="false" />
-        <activity
-            android:name=".activity_measures"
-            android:exported="false"
-            android:label="@string/title_activity_measures"
-            android:theme="@style/Theme.Tudoem1" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -68,6 +63,7 @@
         </activity>
 
         <service android:name=".services.GPService" />
+        <service android:name=".services.NetMonsterService" />
     </application>
 
 </manifest>

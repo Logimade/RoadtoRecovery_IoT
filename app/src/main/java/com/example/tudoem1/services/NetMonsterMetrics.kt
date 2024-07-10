@@ -18,7 +18,9 @@ import androidx.core.content.ContextCompat
 import com.example.tudoem1.databaseUtils.DatabasePrototype
 import com.example.tudoem1.databaseUtils.MetricStructure
 import com.example.tudoem1.webservices.Coordinates
+import com.google.gson.Gson
 import cz.mroczis.netmonster.core.factory.NetMonsterFactory
+import cz.mroczis.netmonster.core.model.cell.ICell
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -51,6 +53,7 @@ class NetMonsterService : Service() {
     }
 
 
+    @SuppressLint("UnspecifiedRegisterReceiverFlag")
     override fun onCreate() {
         super.onCreate()
         db = DatabasePrototype.getDatabase(this)
@@ -139,7 +142,7 @@ class NetMonsterService : Service() {
     @SuppressLint("MissingPermission")
     private fun updateData() {
         NetMonsterFactory.get(this).apply {
-            val merged = getCells()
+            merged = getCells()
             Log.d("NetMonsterService", "Data updated: \n${merged.joinToString(separator = "\n")}")
             serviceScope.launch {
                 db.daoNetworkMethods().insertMetric(
@@ -151,8 +154,9 @@ class NetMonsterService : Service() {
                     )
                 )
             }
+
             val intent = Intent(ACTION_DATA_UPDATED).apply {
-                putExtra(EXTRA_METRICS, merged.joinToString(separator = "\n"))
+                putExtra(EXTRA_METRICS,merged.joinToString(separator = "\n"))
             }
             sendBroadcast(intent)
         }
@@ -179,11 +183,12 @@ class NetMonsterService : Service() {
     }
 
     companion object {
-        private const val ACTION_START_SERVICE = "com.example.tudoem1.action.START_SERVICE"
+        const val ACTION_START_SERVICE = "com.example.tudoem1.action.START_SERVICE"
         private const val ACTION_STOP_SERVICE = "com.example.tudoem1.action.STOP_SERVICE"
         private const val REFRESH_INTERVAL_MS = 1000L // Example refresh interval
-        private const val ACTION_DATA_UPDATED = "com.example.tudoem1.action.DATA_UPDATED"
-        private const val EXTRA_METRICS = "extra_metrics"
+        const val ACTION_DATA_UPDATED = "com.example.tudoem1.action.DATA_UPDATED"
+        const val EXTRA_METRICS = "extra_metrics"
+        lateinit var merged : List<ICell>
         private val LOCATION_PERMISSIONS = arrayOf(
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION,

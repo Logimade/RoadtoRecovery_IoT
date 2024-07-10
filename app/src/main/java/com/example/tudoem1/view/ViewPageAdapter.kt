@@ -1,29 +1,20 @@
-package com.example.tudoem1.view
+package com.example.tudoem1
 
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.adapter.FragmentStateAdapter
 
-// ViewPagerAdapter.kt
-class ViewPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+class ViewPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
 
-    override fun getItem(position: Int): Fragment {
-        return when (position) {
-            0 -> MedicoesFragment()
-            1 -> NetMonstFragment()
-            else -> throw IllegalArgumentException("Invalid position: $position")
-        }
-    }
-
-    override fun getCount(): Int {
+    override fun getItemCount(): Int {
         return 2 // Number of tabs
     }
 
-    override fun getPageTitle(position: Int): CharSequence? {
+    override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> "Medicoes"
-            1 -> "NetMonst"
-            else -> null
+            0 -> NetMonsterFragment()
+            1 -> OtherFragment()
+            else -> throw IllegalStateException("Unexpected position $position")
         }
     }
 }

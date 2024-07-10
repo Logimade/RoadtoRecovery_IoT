@@ -1,0 +1,66 @@
+package com.example.tudoem1
+
+import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.os.Build
+import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
+import com.example.tudoem1.services.NetMonsterService
+
+class NetMonsterFragment : Fragment() {
+
+    private val adapter = MainAdapter()
+    private lateinit var recyclerView: RecyclerView
+
+    private val dataReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent?.action == NetMonsterService.ACTION_DATA_UPDATED) {
+                val metricsJson = intent.getStringExtra(NetMonsterService.EXTRA_METRICS)
+                Log.d("NetMonsterFragment", "Received metrics: $metricsJson")
+                adapter.data = NetMonsterService.merged
+            }
+        }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.activity_main_netmonster, container, false)
+        recyclerView = view.findViewById(R.id.recycler)
+        recyclerView.adapter = adapter
+        return view
+    }
+
+    @SuppressLint("InlinedApi")
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        context?.registerReceiver(
+            dataReceiver, IntentFilter(NetMonsterService.ACTION_DATA_UPDATED),
+            AppCompatActivity.RECEIVER_EXPORTED
+        )
+        startNetMonsterService()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        context?.unregisterReceiver(dataReceiver)
+    }
+
+    private fun startNetMonsterService() {
+        val intent = Intent(context, NetMonsterService::class.java)
+        intent.action = NetMonsterService.ACTION_START_SERVICE
+        context?.startService(intent)
+    }
+}

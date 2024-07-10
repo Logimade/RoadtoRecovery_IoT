@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.tudoem1.databaseUtils.DatabasePrototype;
 import com.example.tudoem1.services.GPService;
+import com.example.tudoem1.services.NetMonsterService;
 
 import util.Util;
 
@@ -63,7 +64,10 @@ public class MainActivity extends AppCompatActivity {
                     startService(i);
                 }
 
-                Intent intent = new Intent(MainActivity.this, NetMonsterActivity.class);
+//                Intent i2 = new Intent(getApplicationContext(), NetMonsterService.class);
+//                startService(i2);
+
+                Intent intent = new Intent(MainActivity.this, AllMeasuresActivity.class);
                 startActivity(intent);
                 finish();
             }
