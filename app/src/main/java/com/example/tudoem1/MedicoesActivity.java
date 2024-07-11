@@ -117,42 +117,8 @@ public class MedicoesActivity extends AppCompatActivity {
         BLECenter.DEBUG_LOG_ON = true;
         BLECenter.DEBUG_LOG_LEVEL = 1;
         bleCenter = BLEContext.getBLECenter(getApplicationContext());
-
-        initParams();
     }
 
-    private void initParams() {
-
-        TextView titulo_Thermo = findViewById(R.id.txt_title_bar_Thermo);
-        titulo_Thermo.setText(getString(R.string.termometro));
-        txt_thermo = findViewById(R.id.txt_thermo);
-        txtEstado_Thermo = findViewById(R.id.txtEstado_Thermo);
-
-        TextView titulo_Tensio = findViewById(R.id.txt_title_bar_Tensio);
-        titulo_Tensio.setText(getString(R.string.tensiometro));
-        valorSYS = findViewById(R.id.valorSYS);
-        valorDIA = findViewById(R.id.valorDIA);
-        txtEstado_Tensio = findViewById(R.id.txtEstado_Tensio);
-
-        TextView titulo_Ecg = findViewById(R.id.txt_title_bar_Ecg);
-        titulo_Ecg.setText(getString(R.string.egc));
-        TextView txt_egc = findViewById(R.id.txt_egc);
-        txtEstado_Ecg = findViewById(R.id.txtEstado_Ecg);
-        valorHR = findViewById(R.id.valorHR);
-
-        TextView titulo_Oxy = findViewById(R.id.txt_title_bar_Oxy);
-        titulo_Oxy.setText(getString(R.string.oximetro));
-        valorSP = findViewById(R.id.valorSP);
-        txtEstado_Oxy = findViewById(R.id.txtEstado_Oxy);
-
-        TextView txtSP = findViewById(R.id.txtSP);
-
-        final String s = "SpO₂";
-        txtSP.setText(s);
-
-        txt_data_hora = findViewById(R.id.txt_data_hora);
-
-    }
 
     private void startLEScan_Thermo() {
         bleCenter.startBLEScan(DeviceFactory.Device.THERMOMETER.getScanOption());
