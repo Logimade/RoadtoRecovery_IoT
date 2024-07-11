@@ -1,6 +1,7 @@
 package com.example.tudoem1
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.LocationManager
@@ -10,7 +11,9 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.tudoem1.databaseUtils.DatabasePrototype
 import com.example.tudoem1.services.GPService
+import com.example.tudoem1.services.NetMonsterService
 import com.example.tudoem1.services.UploadService
 import util.Util
 
@@ -20,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         private const val REQUEST_CODE_BLUETOOTH_SCAN = 101
     }
 
+    @SuppressLint("WrongThread")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -47,8 +51,10 @@ class MainActivity : AppCompatActivity() {
         val btnSettings: Button = findViewById(R.id.btnSettings)
         val btnNetwork: Button = findViewById(R.id.btnNetwork)
 
+        DatabasePrototype.getDatabase(this@MainActivity).clearAllTables()
+
         btnStart.setOnClickListener {
-            startActivity(Intent(this@MainActivity, MedicoesActivity::class.java))
+            startActivity(Intent(this@MainActivity, AllMeasuresActivity::class.java))
             finish()
         }
 
@@ -58,6 +64,8 @@ class MainActivity : AppCompatActivity() {
                 startService(i)
             }
 
+            val i = Intent(this@MainActivity, NetMonsterService::class.java)
+            startService(i)
         }
 
         btnSettings.setOnClickListener {

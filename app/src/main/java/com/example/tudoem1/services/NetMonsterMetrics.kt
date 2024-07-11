@@ -15,6 +15,7 @@ import android.os.Looper
 import android.util.Log
 import androidx.core.content.ContextCompat
 import com.example.tudoem1.databaseUtils.DatabasePrototype
+import com.example.tudoem1.databaseUtils.MeasureStructure
 import com.example.tudoem1.databaseUtils.MetricStructure
 import com.example.tudoem1.webservices.Coordinates
 import cz.mroczis.netmonster.core.factory.NetMonsterFactory
@@ -28,7 +29,7 @@ import java.util.*
 
 class NetMonsterService : Service() {
 
-    private val serviceScope = CoroutineScope(Dispatchers.Main) // Or another appropriate dispatcher
+    private val serviceScope = CoroutineScope(Dispatchers.IO) // Or another appropriate dispatcher
 
     private lateinit var db: DatabasePrototype
     private lateinit var handler: Handler
@@ -79,6 +80,17 @@ class NetMonsterService : Service() {
         when (intent?.action) {
             ACTION_START_SERVICE -> {
                 if (!isServiceRunning) {
+                    measureId = UUID.randomUUID()
+
+                    serviceScope.launch {
+                        db.daoNetworkMethods().insertMeasure(
+                            measure = MeasureStructure(
+                                id = measureId,
+                                startDate = getCurrentDateTime(),
+                                coordinatesStart = locationCoordinates
+                            )
+                        )
+                    }
                     startService()
                     isServiceRunning = true
                 }
@@ -104,7 +116,6 @@ class NetMonsterService : Service() {
             // Perform initialization or any tasks you need to start the service
             // Example: Starting periodic tasks, registering listeners, etc.
             Log.d("NetMonsterService", "Service started")
-            measureId = UUID.randomUUID()
             startUpdatingData()
         } else {
             Log.e("NetMonsterService", "Permissions not granted to start service")
@@ -143,6 +154,7 @@ class NetMonsterService : Service() {
             merged = getCells()
             Log.d("NetMonsterService", "Data updated: \n${merged.joinToString(separator = "\n")}")
             serviceScope.launch {
+                Log.d("Database Store", "Is storing")
                 db.daoNetworkMethods().insertMetric(
                     MetricStructure(
                         timeStamp = getCurrentDateTime(),
@@ -154,7 +166,7 @@ class NetMonsterService : Service() {
             }
 
             val intent = Intent(ACTION_DATA_UPDATED).apply {
-                putExtra(EXTRA_METRICS,merged.joinToString(separator = "\n"))
+                putExtra(EXTRA_METRICS, merged.joinToString(separator = "\n"))
             }
             sendBroadcast(intent)
         }
@@ -186,7 +198,7 @@ class NetMonsterService : Service() {
         private const val REFRESH_INTERVAL_MS = 1000L // Example refresh interval
         const val ACTION_DATA_UPDATED = "com.example.tudoem1.action.DATA_UPDATED"
         const val EXTRA_METRICS = "extra_metrics"
-        lateinit var merged : List<ICell>
+        lateinit var merged: List<ICell>
         private val LOCATION_PERMISSIONS = arrayOf(
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION,

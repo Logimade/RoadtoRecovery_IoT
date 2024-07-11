@@ -35,6 +35,7 @@ class UploadService : Service() {
         override fun run() {
             serviceScope.launch {
                 dataToUpload = db.daoNetworkMethods().getMeasuresToUpload()
+                Log.d("Database", "$dataToUpload")
 
                 if (dataToUpload.isEmpty()) {
                     return@launch
