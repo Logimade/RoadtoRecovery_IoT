@@ -192,19 +192,5 @@ class NetMonsterService : Service() {
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.READ_PHONE_STATE
         )
-
-        fun startService(context: Context) {
-            val startIntent = Intent(context, NetMonsterService::class.java).apply {
-                action = ACTION_START_SERVICE
-            }
-            context.startService(startIntent)
-        }
-
-        fun stopService(context: Context) {
-            val stopIntent = Intent(context, NetMonsterService::class.java).apply {
-                action = ACTION_STOP_SERVICE
-            }
-            context.startService(stopIntent)
-        }
     }
 }

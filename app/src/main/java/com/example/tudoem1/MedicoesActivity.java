@@ -290,22 +290,22 @@ public class MedicoesActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                RelativeLayout relativeLayout = findViewById(R.id.thermometer_activity_main_content);
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                params.addRule(RelativeLayout.CENTER_IN_PARENT);
-
-                // Verifica se progressBar já tem um pai e remove se necessário
-                if (progressBar != null && progressBar.getParent() != null) {
-                    ((ViewGroup) progressBar.getParent()).removeView(progressBar);
-                }
-
-                if (progressBar == null) {
-                    progressBar = new ProgressBar(self, null, android.R.attr.progressBarStyleLarge);
-                    progressBar.setIndeterminate(false);
-                    progressBar.setVisibility(View.VISIBLE);
-                }
-
-                relativeLayout.addView(progressBar, params);
+//                RelativeLayout relativeLayout = findViewById(R.id.thermometer_activity_main_content);
+//                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//                params.addRule(RelativeLayout.CENTER_IN_PARENT);
+//
+//                // Verifica se progressBar já tem um pai e remove se necessário
+//                if (progressBar != null && progressBar.getParent() != null) {
+//                    ((ViewGroup) progressBar.getParent()).removeView(progressBar);
+//                }
+//
+//                if (progressBar == null) {
+//                    progressBar = new ProgressBar(self, null, android.R.attr.progressBarStyleLarge);
+//                    progressBar.setIndeterminate(false);
+//                    progressBar.setVisibility(View.VISIBLE);
+//                }
+//
+//                relativeLayout.addView(progressBar, params);
             }
         });
     }
@@ -314,8 +314,8 @@ public class MedicoesActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.thermometer_activity_main_content);
-                relativeLayout.removeView(progressBar);
+//                RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.thermometer_activity_main_content);
+//                relativeLayout.removeView(progressBar);
             }
         });
     }
@@ -414,22 +414,22 @@ public class MedicoesActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                RelativeLayout relativeLayout = findViewById(R.id.tensio_activity_main_content);
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                params.addRule(RelativeLayout.CENTER_IN_PARENT);
-
-                // Verifica se progressBar já tem um pai e remove se necessário
-                if (progressBar != null && progressBar.getParent() != null) {
-                    ((ViewGroup) progressBar.getParent()).removeView(progressBar);
-                }
-
-                if (progressBar == null) {
-                    progressBar = new ProgressBar(self, null, android.R.attr.progressBarStyleLarge);
-                    progressBar.setIndeterminate(false);
-                    progressBar.setVisibility(View.VISIBLE);
-                }
-
-                relativeLayout.addView(progressBar, params);
+//                RelativeLayout relativeLayout = findViewById(R.id.tensio_activity_main_content);
+//                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//                params.addRule(RelativeLayout.CENTER_IN_PARENT);
+//
+//                // Verifica se progressBar já tem um pai e remove se necessário
+//                if (progressBar != null && progressBar.getParent() != null) {
+//                    ((ViewGroup) progressBar.getParent()).removeView(progressBar);
+//                }
+//
+//                if (progressBar == null) {
+//                    progressBar = new ProgressBar(self, null, android.R.attr.progressBarStyleLarge);
+//                    progressBar.setIndeterminate(false);
+//                    progressBar.setVisibility(View.VISIBLE);
+//                }
+//
+//                relativeLayout.addView(progressBar, params);
             }
         });
     }
@@ -439,8 +439,8 @@ public class MedicoesActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.tensio_activity_main_content);
-                relativeLayout.removeView(progressBar);
+//                RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.tensio_activity_main_content);
+//                relativeLayout.removeView(progressBar);
             }
         });
     }
@@ -627,22 +627,22 @@ public class MedicoesActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                RelativeLayout relativeLayout = findViewById(R.id.ecg_activity_main_content);
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                params.addRule(RelativeLayout.CENTER_IN_PARENT);
-
-                // Verifica se progressBar já tem um pai e remove se necessário
-                if (progressBar != null && progressBar.getParent() != null) {
-                    ((ViewGroup) progressBar.getParent()).removeView(progressBar);
-                }
-
-                if (progressBar == null) {
-                    progressBar = new ProgressBar(self, null, android.R.attr.progressBarStyleLarge);
-                    progressBar.setIndeterminate(false);
-                    progressBar.setVisibility(View.VISIBLE);
-                }
-
-                relativeLayout.addView(progressBar, params);
+//                RelativeLayout relativeLayout = findViewById(R.id.ecg_activity_main_content);
+//                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//                params.addRule(RelativeLayout.CENTER_IN_PARENT);
+//
+//                // Verifica se progressBar já tem um pai e remove se necessário
+//                if (progressBar != null && progressBar.getParent() != null) {
+//                    ((ViewGroup) progressBar.getParent()).removeView(progressBar);
+//                }
+//
+//                if (progressBar == null) {
+//                    progressBar = new ProgressBar(self, null, android.R.attr.progressBarStyleLarge);
+//                    progressBar.setIndeterminate(false);
+//                    progressBar.setVisibility(View.VISIBLE);
+//                }
+//
+//                relativeLayout.addView(progressBar, params);
             }
         });
     }
@@ -651,8 +651,8 @@ public class MedicoesActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.ecg_activity_main_content);
-                relativeLayout.removeView(progressBar);
+//                RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.ecg_activity_main_content);
+//                relativeLayout.removeView(progressBar);
             }
         });
     }
@@ -815,21 +815,21 @@ public class MedicoesActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                RelativeLayout relativeLayout = findViewById(R.id.oximeter_activity_main_content);
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                params.addRule(RelativeLayout.CENTER_IN_PARENT);
-
-                // Verifica se progressBar já tem um pai e remove se necessário
-                if (progressBar != null && progressBar.getParent() != null) {
-                    ((ViewGroup) progressBar.getParent()).removeView(progressBar);
-                }
-
-                if (progressBar == null) {
-                    progressBar = new ProgressBar(self, null, android.R.attr.progressBarStyleLarge);
-                    progressBar.setIndeterminate(false);
-                    progressBar.setVisibility(View.VISIBLE);
-                }
-                relativeLayout.addView(progressBar, params);
+//                RelativeLayout relativeLayout = findViewById(R.id.oximeter_activity_main_content);
+//                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//                params.addRule(RelativeLayout.CENTER_IN_PARENT);
+//
+//                // Verifica se progressBar já tem um pai e remove se necessário
+//                if (progressBar != null && progressBar.getParent() != null) {
+//                    ((ViewGroup) progressBar.getParent()).removeView(progressBar);
+//                }
+//
+//                if (progressBar == null) {
+//                    progressBar = new ProgressBar(self, null, android.R.attr.progressBarStyleLarge);
+//                    progressBar.setIndeterminate(false);
+//                    progressBar.setVisibility(View.VISIBLE);
+//                }
+//                relativeLayout.addView(progressBar, params);
             }
         });
     }
@@ -838,8 +838,8 @@ public class MedicoesActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                RelativeLayout relativeLayout = findViewById(R.id.oximeter_activity_main_content);
-                relativeLayout.removeView(progressBar);
+//                RelativeLayout relativeLayout = findViewById(R.id.oximeter_activity_main_content);
+//                relativeLayout.removeView(progressBar);
             }
         });
     }

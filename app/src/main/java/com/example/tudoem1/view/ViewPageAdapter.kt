@@ -13,7 +13,7 @@ class ViewPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapte
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> NetMonsterFragment()
-            1 -> OtherFragment()
+            1 -> SensorFragment()
             else -> throw IllegalStateException("Unexpected position $position")
         }
     }

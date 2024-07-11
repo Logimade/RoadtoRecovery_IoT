@@ -1,9 +1,11 @@
 package com.example.tudoem1.services
 
 import android.app.IntentService
+import android.app.Service
 import android.content.Intent
 import android.util.Log
 import android.os.Handler
+import android.os.IBinder
 import android.os.Looper
 import com.example.tudoem1.databaseUtils.DatabasePrototype
 import com.example.tudoem1.databaseUtils.MeasureStructure
@@ -21,11 +23,11 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UploadService : IntentService("UploadService") {
+class UploadService : Service() {
 
-    private val db = DatabasePrototype.getDatabase(this)
+    private lateinit var  db : DatabasePrototype
     private val handler = Handler(Looper.getMainLooper())
-    private val serviceScope = CoroutineScope(Dispatchers.Main) // Or another appropriate dispatcher
+    private val serviceScope = CoroutineScope(Dispatchers.IO) // Or another appropriate dispatcher
     lateinit var dataToUpload: List<MeasureWithMetrics>
     lateinit var postData: PostData
 
@@ -69,16 +71,21 @@ class UploadService : IntentService("UploadService") {
             handler.postDelayed(this, CHECK_INTERVAL_MS)
         }
     }
-
-    override fun onHandleIntent(intent: Intent?) {
-        // Start the upload task immediately
+    override fun onCreate() {
+        super.onCreate()
+        db = DatabasePrototype.getDatabase(this)
         handler.post(uploadRunnable)
+
     }
 
     override fun onDestroy() {
         super.onDestroy()
         // Remove pending callbacks to stop the service properly
         handler.removeCallbacks(uploadRunnable)
+    }
+
+    override fun onBind(intent: Intent?): IBinder? {
+        return null
     }
 
     private fun metricStructureListToMeasureList(metricStructureList: List<MetricStructure>): List<Measure> {
@@ -93,6 +100,6 @@ class UploadService : IntentService("UploadService") {
 
     companion object {
         private const val TAG = "UploadService"
-        private const val CHECK_INTERVAL_MS = 300000L // Check every 5 minutes (adjust as needed)
+        private const val CHECK_INTERVAL_MS = 10000L // Check every 5 minutes (adjust as needed)
     }
 }

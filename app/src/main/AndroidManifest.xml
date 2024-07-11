@@ -50,9 +50,6 @@
             android:name=".MedicoesActivity"
             android:exported="false" />
         <activity
-            android:name=".NetMonsterActivity"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -64,6 +61,7 @@
 
         <service android:name=".services.GPService" />
         <service android:name=".services.NetMonsterService" />
+        <service android:name=".services.UploadService"/>
     </application>
 
 </manifest>
