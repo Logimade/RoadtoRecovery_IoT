@@ -18,7 +18,13 @@ import com.example.tudoem1.databaseUtils.DatabasePrototype
 import com.example.tudoem1.databaseUtils.MeasureStructure
 import com.example.tudoem1.databaseUtils.MetricStructure
 import com.example.tudoem1.webservices.Coordinates
+import cz.mroczis.netmonster.core.db.model.NetworkType
 import cz.mroczis.netmonster.core.factory.NetMonsterFactory
+import cz.mroczis.netmonster.core.feature.detect.DetectorHspaDc
+import cz.mroczis.netmonster.core.feature.detect.DetectorLteAdvancedCellInfo
+import cz.mroczis.netmonster.core.feature.detect.DetectorLteAdvancedNrDisplayInfo
+import cz.mroczis.netmonster.core.feature.detect.DetectorLteAdvancedNrServiceState
+import cz.mroczis.netmonster.core.feature.detect.DetectorLteAdvancedPhysicalChannel
 import cz.mroczis.netmonster.core.model.cell.ICell
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -150,7 +156,41 @@ class NetMonsterService : Service() {
 
     @SuppressLint("MissingPermission")
     private fun updateData() {
+        val SUBSCRIPTION_ID = 0
         NetMonsterFactory.get(this).apply {
+
+            val networkType: NetworkType = getNetworkType(SUBSCRIPTION_ID)
+            Log.d("Network Type", "$networkType")
+            // Only HSPA+42 (guess, not from RIL)
+            val isHspaDc: NetworkType? = getNetworkType(SUBSCRIPTION_ID, DetectorHspaDc())
+            Log.d("Network isHspaDc", "$isHspaDc")
+
+            // LTE-A from CellInfo (guess, not from RIL), NSA NR
+            val isLteCaCellInfo: NetworkType? =
+                getNetworkType(SUBSCRIPTION_ID, DetectorLteAdvancedCellInfo())
+            Log.d("Network isLteCaCellInfo", "$isLteCaCellInfo")
+
+            // LTE-A from ServiceState (from RIL, Android P+)
+            val isLteCaServiceState: NetworkType? =
+                getNetworkType(SUBSCRIPTION_ID, DetectorLteAdvancedNrServiceState())
+            Log.d("Network isLteCaServiceState", "$isLteCaServiceState")
+
+            // LTE-A from PhysicalChannel (from RIL, Android P+)
+            val isLteCaPhysicalChannel: NetworkType? =
+                getNetworkType(SUBSCRIPTION_ID, DetectorLteAdvancedPhysicalChannel())
+            Log.d("Network isLteCaPhysicalChannel", "$isLteCaPhysicalChannel")
+
+            // LTE-A and NR from DisplayInfo (marketing purposes, might result false-positive data, Android R+)
+            // You can also detect only LTE-A or NR using one of classes:
+            // - DetectorLteAdvancedServiceState ... for LTE-A
+            // - DetectorNsaNr ... for NR NSA
+            val isLteCaOrNsaNrDisplayInfo: NetworkType? =
+                getNetworkType(SUBSCRIPTION_ID, DetectorLteAdvancedNrDisplayInfo())
+            Log.d("Network isLteCaOrNsaNrDisplayInfo", "$isLteCaOrNsaNrDisplayInfo")
+
+
+
+
             merged = getCells()
             Log.d("NetMonsterService", "Data updated: \n${merged.joinToString(separator = "\n")}")
             serviceScope.launch {

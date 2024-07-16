@@ -38,7 +38,12 @@ class MainActivity : AppCompatActivity() {
             ) {
                 ActivityCompat.requestPermissions(
                     this,
-                    arrayOf(Manifest.permission.BLUETOOTH_SCAN),
+                    arrayOf(
+                        Manifest.permission.BLUETOOTH_SCAN,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.READ_PHONE_STATE
+                    ),
                     REQUEST_CODE_BLUETOOTH_SCAN
                 )
             }
@@ -88,8 +93,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-
 
 
     private fun checkGpsStatus(): Boolean {
