@@ -88,7 +88,7 @@ public class MedicoesActivity extends AppCompatActivity {
 
         Button btnVoltar = findViewById(R.id.btnVoltar);
 
-        ip1 = getIntent().getStringExtra("Ip_text");
+//        ip1 = getIntent().getStringExtra("Ip_text");
 
 
         timer = new Timer();
@@ -117,7 +117,28 @@ public class MedicoesActivity extends AppCompatActivity {
         BLECenter.DEBUG_LOG_ON = true;
         BLECenter.DEBUG_LOG_LEVEL = 1;
         bleCenter = BLEContext.getBLECenter(getApplicationContext());
+
+        initParams();
     }
+
+    private void initParams() {
+
+        txt_thermo = findViewById(R.id.txt_thermo);
+        txtEstado_Thermo = findViewById(R.id.txtEstado_Thermo);
+
+
+        valorSYS = findViewById(R.id.valorSYS);
+        valorDIA = findViewById(R.id.valorDIA);
+        txtEstado_Tensio = findViewById(R.id.txtEstado_Tensio);
+
+//        txtEstado_Ecg = findViewById(R.id.txtEstado_Ecg);
+//        valorHR = findViewById(R.id.valorHR);
+//
+//        valorSP = findViewById(R.id.valorSP);
+        txtEstado_Oxy = findViewById(R.id.txtEstado_Oxy);
+
+    }
+
 
 
     private void startLEScan_Thermo() {
@@ -171,6 +192,17 @@ public class MedicoesActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart(){
+        super.onStart();
+//        startLEScan_Thermo();
+//        startLEScan_Tensio();
+//        startLEScan_Ecg();
+        startLEScan_Oxy();
+        BLECenter.bus().register(this);
+
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
 
@@ -187,13 +219,6 @@ public class MedicoesActivity extends AppCompatActivity {
         txtEstado_Oxy.setText("Searching for sensor");
         showLoading_Oxy();
 
-        txt_data_hora.setText(Util.currentDataTime());
-
-        startLEScan_Thermo();
-        startLEScan_Tensio();
-        startLEScan_Ecg();
-        startLEScan_Oxy();
-        BLECenter.bus().register(this);
     }
 
     @Override
@@ -255,24 +280,24 @@ public class MedicoesActivity extends AppCompatActivity {
                 //UNCOMMENT TO CONNECT TO SOCKET_SERVER
 
 
-                try {
-                    Thread.sleep(1000);
-                    //Log.d("MYINT", "value2: "+temperatura);
-                    String frase = Float.toString(temperatura);
-                    String msg = "S1: " + frase;
-                    //String str = String.valueOf(temperatura);
-                    socket = new Socket(ip1, 12345);
-                    dos = new DataOutputStream(socket.getOutputStream());
+//                try {
+//                    Thread.sleep(1000);
+//                    //Log.d("MYINT", "value2: "+temperatura);
+//                    String frase = Float.toString(temperatura);
+//                    String msg = "S1: " + frase;
+//                    //String str = String.valueOf(temperatura);
+//                    socket = new Socket(ip1, 12345);
+//                    dos = new DataOutputStream(socket.getOutputStream());
 
-                    dos.write(msg.getBytes(StandardCharsets.UTF_8));
-                    dos.close();
-                    dos.flush();
-                    socket.close();
+//                    dos.write(msg.getBytes(StandardCharsets.UTF_8));
+//                    dos.close();
+//                    dos.flush();
+//                    socket.close();
 
 
-                } catch (IOException | InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+//                } catch (IOException | InterruptedException e) {
+//                    throw new RuntimeException(e);
+//                }
 
             }
         });
@@ -724,7 +749,7 @@ public class MedicoesActivity extends AppCompatActivity {
             public void run() {
 
                 while (check) {
-
+                    Log.i("BLE Oxy", String.valueOf(bleCenter.getDevices()));
                     if (!bleCenter.getDevices().isEmpty()) {
                         ArrayList<GenericDevice> device = bleCenter.getDevices();
                         for (GenericDevice g : device) {
@@ -734,7 +759,7 @@ public class MedicoesActivity extends AppCompatActivity {
                                 oximeter = (Oximeter) bleCenter.getDevice(g.getBleDevice().getAddress());
                                 mac = g.getBleDevice().getAddress();
 
-                                Log.i("LOG_APP", mac);
+                                Log.i("LOG_APP1", mac);
                                 if (ActivityCompat.checkSelfPermission(MedicoesActivity.this, android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
                                     // TODO: Consider calling
                                     //    ActivityCompat#requestPermissions
@@ -780,7 +805,8 @@ public class MedicoesActivity extends AppCompatActivity {
             public void run() {
                 oxygenContent = event.getOximeterData().getOxygenContent();
                 pulse = event.getOximeterData().getPulse();
-
+                Log.d("Oxy Values", String.valueOf(oxygenContent));
+                Log.d("Oxy Values", String.valueOf(pulse));
                 if (oxygenContent > 0 && pulse > 0) {
                     valorFC.setText(Integer.toString(pulse));
                     valorSP.setText(Integer.toString(oxygenContent));

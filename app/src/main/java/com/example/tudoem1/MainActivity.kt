@@ -71,6 +71,9 @@ class MainActivity : AppCompatActivity() {
 
             val i = Intent(this@MainActivity, NetMonsterService::class.java)
             startService(i)
+
+            startActivity(Intent(this@MainActivity, AllMeasuresActivity::class.java))
+            finish()
         }
 
         btnSettings.setOnClickListener {
