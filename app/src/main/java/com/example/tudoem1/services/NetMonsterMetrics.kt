@@ -156,7 +156,7 @@ class NetMonsterService : Service() {
 
     @SuppressLint("MissingPermission")
     private fun updateData() {
-        val SUBSCRIPTION_ID = 0
+        val SUBSCRIPTION_ID = 1
         NetMonsterFactory.get(this).apply {
 
             val networkType: NetworkType = getNetworkType(SUBSCRIPTION_ID)
