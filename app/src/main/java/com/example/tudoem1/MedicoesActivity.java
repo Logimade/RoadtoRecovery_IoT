@@ -792,6 +792,8 @@ public class MedicoesActivity extends AppCompatActivity {
         bleCenter.stopBLEScan();
     }
 
+
+
     @Subscribe
     @SuppressWarnings("unused")
     public void onOximeterEvent(final OximeterEvent event) {

@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         DatabasePrototype.getDatabase(this@MainActivity).clearAllTables()
 
         btnStart.setOnClickListener {
-            startActivity(Intent(this@MainActivity, MedicoesActivity::class.java))
+            startActivity(Intent(this@MainActivity, AllMeasuresActivity::class.java))
             finish()
         }
 
