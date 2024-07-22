@@ -15,6 +15,8 @@ import androidx.fragment.app.Fragment
 import com.squareup.otto.Subscribe
 import visiomed.fr.bleframework.common.BLECenter
 import visiomed.fr.bleframework.common.BLEContext
+import visiomed.fr.bleframework.data.ecg.ECGExamData
+import visiomed.fr.bleframework.data.ecg.ECGRealTimeData
 import visiomed.fr.bleframework.device.BloodPressureMonitor
 import visiomed.fr.bleframework.device.DeviceFactory
 import visiomed.fr.bleframework.device.Oximeter
@@ -52,6 +54,8 @@ class SensorFragment : Fragment() {
     private lateinit var oximeterState: TextView
     private lateinit var homeButton: Button
 
+    private val  ecgClass = ECGExamData()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -77,7 +81,7 @@ class SensorFragment : Fragment() {
         txtEstado_Tensio = view.findViewById(R.id.txtEstado_Tensio)
         oximeterSpOValue = view.findViewById(R.id.valorSpO)
         oximeterPrBpmValue = view.findViewById(R.id.valorPrbpm)
-        oximeterState = view.findViewById(R.id.oximeterState)
+        oximeterState = view.findViewById(R.id.txtEstado_Oxy)
     }
 
     override fun onStart() {
@@ -87,7 +91,8 @@ class SensorFragment : Fragment() {
         bleCenter = BLEContext.getBLECenter(requireContext().applicationContext)
 
 //        startLEScan_Thermo()
-        startLEScan_Oxy()
+//        startLEScan_Oxy()
+//        startLEScan_ECG()
         BLECenter.bus().register(this)
     }
 
@@ -118,6 +123,8 @@ class SensorFragment : Fragment() {
             }
         }
 //        showLoading_Oxy()
+        val data = ecgClass.heartRate
+        data.toString().let { Log.d("test", it) }
     }
 
     private fun startLEScan_Thermo() {
@@ -264,6 +271,55 @@ class SensorFragment : Fragment() {
             }
         }
     }
+
+//    private fun startLEScan_ECG() {
+//        bleCenter.startBLEScan(DeviceFactory.Device.ECG.scanOption)
+//
+//        Thread {
+//            var check = true
+//            while (check) {
+//                Log.i("BLE Oxy", bleCenter.devices.toString())
+//
+//                val devices = bleCenter.devices
+//                if (devices.isNotEmpty()) {
+//                    devices.forEach { device ->
+//                        if (device is ECG) {
+//                            device.connect()
+//                            ecg = bleCenter.getDevice(device.bleDevice.address) as ECG
+//                            val mac = device.bleDevice.address
+//                            Log.i("LOG_APP1", mac)
+////device.startRealTimeMode()
+////ecg.startRealTimeMode()
+//                            Log.d("ress", ecg.getRecordAtIndex(0).toString())
+//                            if (ActivityCompat.checkSelfPermission(
+//                                    requireContext(),
+//                                    Manifest.permission.BLUETOOTH_CONNECT
+//                                ) != PackageManager.PERMISSION_GRANTED
+//                            ) {
+//                                ActivityCompat.requestPermissions(
+//                                    requireActivity(),
+//                                    arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
+//                                    0
+//                                )
+//                                return@Thread
+//                            }
+//
+//                            Log.i("LOG_APP", device.bleDevice.name ?: "")
+//                            stopLEScan_ECG()
+//                            check = false
+//                        }
+//                    }
+//                }
+//            }
+//            if (!check) {
+//                Thread.currentThread().interrupt()
+//            }
+//        }.start()
+//    }
+//
+//    private fun stopLEScan_ECG() {
+//        bleCenter.stopBLEScan()
+//    }
 
 
 }
