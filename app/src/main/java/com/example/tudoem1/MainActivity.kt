@@ -23,30 +23,30 @@ class MainActivity : AppCompatActivity() {
         private const val REQUEST_CODE_BLUETOOTH_SCAN = 101
     }
 
-    @SuppressLint("WrongThread")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         Util.fullscreen(this)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            if (ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.BLUETOOTH_SCAN
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(
-                        Manifest.permission.BLUETOOTH_SCAN,
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.READ_PHONE_STATE
-                    ),
-                    REQUEST_CODE_BLUETOOTH_SCAN
-                )
-            }
+
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.BLUETOOTH_SCAN
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    Manifest.permission.BLUETOOTH_SCAN,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.READ_PHONE_STATE
+                ),
+                REQUEST_CODE_BLUETOOTH_SCAN
+            )
+
         }
 
         val intent1 = Intent(this@MainActivity, UploadService::class.java)
@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         val btnSettings: Button = findViewById(R.id.btnSettings)
         val btnNetwork: Button = findViewById(R.id.btnNetwork)
 
-        DatabasePrototype.getDatabase(this@MainActivity).clearAllTables()
+//        DatabasePrototype.getDatabase(this@MainActivity).clearAllTables()
 
         btnStart.setOnClickListener {
             startActivity(Intent(this@MainActivity, AllMeasuresActivity::class.java))
