@@ -1,23 +1,21 @@
 package com.example.tudoem1.services
 
-import android.app.IntentService
 import android.app.Service
 import android.content.Intent
-import android.util.Log
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
+import android.util.Log
 import com.example.tudoem1.databaseUtils.DatabasePrototype
-import com.example.tudoem1.databaseUtils.MeasureStructure
 import com.example.tudoem1.databaseUtils.MeasureWithMetrics
 import com.example.tudoem1.databaseUtils.MetricStructure
 import com.example.tudoem1.webservices.Measure
+import com.example.tudoem1.webservices.MeasureStructure
 import com.example.tudoem1.webservices.PostData
 import com.example.tudoem1.webservices.retrofitInterface
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -43,7 +41,13 @@ class UploadService : Service() {
 
                 dataToUpload.forEach {
                     postData = PostData(
-                        acquisition = it.acquisition,
+                        acquisition =  MeasureStructure(
+                            id = it.acquisition.id.toString(),
+                            startDate = it.acquisition.startDate,
+                            endDate = it.acquisition.endDate,
+                            coordinatesStart = it.acquisition.coordinatesStart,
+                            coordinatesEnd = it.acquisition.coordinatesEnd
+                        ),
                         measures = metricStructureListToMeasureList(it.metrics)
                     )
                 }
@@ -93,8 +97,15 @@ class UploadService : Service() {
         return metricStructureList.map {
             Measure(
                 timestamp = it.timeStamp,
+                measureId = it.measureId.toString(),
                 coordinates = it.coordinates,
-                metrics = it.metrics
+                metrics = it.metrics,
+                networkType = it.networkType,
+                isHspaDc = it.isHspaDc,
+                isLteCaServiceState = it.isLteCaServiceState,
+                isLteCaCellInfo = it.isLteCaCellInfo,
+                isLteCaOrNsaNrDisplayInfo = it.isLteCaOrNsaNrDisplayInfo,
+                isLteCaPhysicalChannel = it.isLteCaPhysicalChannel
             )
         }
     }

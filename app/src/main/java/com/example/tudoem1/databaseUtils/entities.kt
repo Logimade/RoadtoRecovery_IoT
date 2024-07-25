@@ -30,7 +30,6 @@ data class MetricStructure(
     val isLteCaServiceState: String?,
     val isLteCaPhysicalChannel: String?,
     val isLteCaOrNsaNrDisplayInfo: String?
-
 )
 
 @Entity

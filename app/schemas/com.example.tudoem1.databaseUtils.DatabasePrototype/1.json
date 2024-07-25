@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "d33296580a0c7cedf1dac26c338f8cef",
+    "identityHash": "a0c5f544ae694cb1ac023245250fd3ed",
     "entities": [
       {
         "tableName": "MeasureStructure",
@@ -56,7 +56,7 @@
       },
       {
         "tableName": "MetricStructure",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`timeStamp` TEXT NOT NULL, `measureId` BLOB NOT NULL, `coordinates` TEXT NOT NULL, `metrics` TEXT NOT NULL, PRIMARY KEY(`timeStamp`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`timeStamp` TEXT NOT NULL, `measureId` BLOB NOT NULL, `coordinates` TEXT NOT NULL, `metrics` TEXT NOT NULL, `networkType` TEXT NOT NULL, `isHspaDc` TEXT, `isLteCaCellInfo` TEXT, `isLteCaServiceState` TEXT, `isLteCaPhysicalChannel` TEXT, `isLteCaOrNsaNrDisplayInfo` TEXT, PRIMARY KEY(`timeStamp`))",
         "fields": [
           {
             "fieldPath": "timeStamp",
@@ -81,6 +81,42 @@
             "columnName": "metrics",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "networkType",
+            "columnName": "networkType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isHspaDc",
+            "columnName": "isHspaDc",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isLteCaCellInfo",
+            "columnName": "isLteCaCellInfo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isLteCaServiceState",
+            "columnName": "isLteCaServiceState",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isLteCaPhysicalChannel",
+            "columnName": "isLteCaPhysicalChannel",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isLteCaOrNsaNrDisplayInfo",
+            "columnName": "isLteCaOrNsaNrDisplayInfo",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -96,7 +132,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd33296580a0c7cedf1dac26c338f8cef')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a0c5f544ae694cb1ac023245250fd3ed')"
     ]
   }
 }

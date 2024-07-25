@@ -115,7 +115,7 @@ class Activity_Oxy : AppCompatActivity() {
 
         Thread {
             try {
-                val msg = "S4: $oxygenContent|$pulse"
+                val msg = "S4: $oxygenContent(SPO2) $pulse(PR)"
                 val socket = Socket(ip, 12345)
                 val dos = DataOutputStream(socket.getOutputStream())
 

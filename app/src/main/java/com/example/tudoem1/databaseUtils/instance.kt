@@ -8,12 +8,12 @@ import androidx.room.migration.AutoMigrationSpec
 @Database(
     entities = [MeasureStructure::class, MetricStructure::class],
     version = 2,
-    autoMigrations = [
-        AutoMigration(
-            from = 1, to = 2,
-            spec = DatabasePrototype.MigrateOldToNew::class
-        )
-    ]
+//    autoMigrations = [
+//        AutoMigration(
+//            from = 1, to = 2,
+//            spec = DatabasePrototype.MigrateOldToNew::class
+//        )
+//    ]
 )
 
 abstract class DatabasePrototype : RoomDatabase() {
