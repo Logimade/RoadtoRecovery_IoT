@@ -26,6 +26,6 @@ interface NetworkMethods {
     suspend fun getMeasuresToUpload(): List<MeasureWithMetrics>
 
     @Query("UPDATE MeasureStructure SET endDate=:endMeasure, coordinatesEnd=:coordinatesStopped WHERE id=:key")
-    suspend fun updateMeasure(key:UUID, endMeasure:String, coordinatesStopped: Coordinates)
+    fun updateMeasure(key:UUID, endMeasure:String, coordinatesStopped: Coordinates)
 
 }

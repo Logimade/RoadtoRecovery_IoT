@@ -133,13 +133,27 @@ class NetMonsterService : Service() {
     private fun stopService() {
         // Clean up tasks, unregister receivers, stop updates, etc.
         Log.d("NetMonsterService", "Service stopped")
+        handler.removeCallbacksAndMessages(null)
+        db.daoNetworkMethods().updateMeasure(
+            key = measureId, endMeasure = getCurrentDateTime(),
+            coordinatesStopped = locationCoordinates
+        )
+        Log.d("NetMonsterService", "Database Updated")
+//        serviceScope.launch {
+//            db.daoNetworkMethods().updateMeasure(
+//                key = measureId, endMeasure = getCurrentDateTime(),
+//                coordinatesStopped = locationCoordinates
+//            )
+//        }
         stopDataUpdates()
         stopSelf() // Stop the service itself
     }
 
     private fun stopDataUpdates() {
         // Example: Cancel any ongoing coroutines or stop any ongoing operations
+        unregisterReceiver(locationReceiver)
         serviceScope.cancel()
+
     }
 
 
@@ -240,7 +254,7 @@ class NetMonsterService : Service() {
 
     companion object {
         const val ACTION_START_SERVICE = "com.example.tudoem1.action.START_SERVICE"
-        private const val ACTION_STOP_SERVICE = "com.example.tudoem1.action.STOP_SERVICE"
+        const val ACTION_STOP_SERVICE = "com.example.tudoem1.action.STOP_SERVICE"
         private const val REFRESH_INTERVAL_MS = 1000L // Example refresh interval
         const val ACTION_DATA_UPDATED = "com.example.tudoem1.action.DATA_UPDATED"
         const val EXTRA_METRICS = "extra_metrics"

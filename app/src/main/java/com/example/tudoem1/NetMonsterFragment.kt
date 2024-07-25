@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -21,6 +22,7 @@ class NetMonsterFragment : Fragment() {
 
     private val adapter = MainAdapter()
     private lateinit var recyclerView: RecyclerView
+    private lateinit var stopMeasureButton: Button
 
     private val dataReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -39,6 +41,15 @@ class NetMonsterFragment : Fragment() {
         val view = inflater.inflate(R.layout.activity_main_netmonster, container, false)
         recyclerView = view.findViewById(R.id.recycler)
         recyclerView.adapter = adapter
+
+        stopMeasureButton = view.findViewById(R.id.my_button)
+
+        stopMeasureButton.setOnClickListener {
+            context?.unregisterReceiver(dataReceiver)
+            val intent = Intent(context, NetMonsterService::class.java)
+            intent.action = NetMonsterService.ACTION_STOP_SERVICE
+            context?.startService(intent)
+        }
         return view
     }
 
@@ -51,6 +62,7 @@ class NetMonsterFragment : Fragment() {
             AppCompatActivity.RECEIVER_EXPORTED
         )
         startNetMonsterService()
+
     }
 
     override fun onDestroy() {

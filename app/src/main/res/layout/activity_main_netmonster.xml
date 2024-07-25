@@ -38,4 +38,20 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
+
+        <!-- Button positioned at the bottom center -->
+        <Button
+            android:id="@+id/my_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Stop Measure QoS" />
+    </FrameLayout>
+
+
+
 </LinearLayout>
