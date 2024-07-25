@@ -200,7 +200,13 @@ class NetMonsterService : Service() {
                         timeStamp = getCurrentDateTime(),
                         measureId = measureId,
                         coordinates = locationCoordinates,
-                        metrics = merged.joinToString(separator = "\n")
+                        metrics = merged.joinToString(separator = "\n"),
+                        networkType = networkType.toString(),
+                        isHspaDc = isHspaDc?.toString(),
+                        isLteCaCellInfo = isLteCaCellInfo?.toString(),
+                        isLteCaServiceState = isLteCaServiceState?.toString(),
+                        isLteCaPhysicalChannel = isLteCaPhysicalChannel?.toString(),
+                        isLteCaOrNsaNrDisplayInfo = isLteCaOrNsaNrDisplayInfo?.toString()
                     )
                 )
             }

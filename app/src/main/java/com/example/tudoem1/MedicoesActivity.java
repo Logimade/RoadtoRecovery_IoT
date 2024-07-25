@@ -124,18 +124,18 @@ public class MedicoesActivity extends AppCompatActivity {
     private void initParams() {
 
         txt_thermo = findViewById(R.id.txt_thermo);
-        txtEstado_Thermo = findViewById(R.id.txtEstado_Thermo);
+//        txtEstado_Thermo = findViewById(R.id.txtEstado_Thermo);
 
 
-        valorSYS = findViewById(R.id.valorSYS);
-        valorDIA = findViewById(R.id.valorDIA);
-        txtEstado_Tensio = findViewById(R.id.txtEstado_Tensio);
+//        valorSYS = findViewById(R.id.valorSYS);
+//        valorDIA = findViewById(R.id.valorDIA);
+//        txtEstado_Tensio = findViewById(R.id.txtEstado_Tensio);
 
 //        txtEstado_Ecg = findViewById(R.id.txtEstado_Ecg);
 //        valorHR = findViewById(R.id.valorHR);
 //
 //        valorSP = findViewById(R.id.valorSP);
-        txtEstado_Oxy = findViewById(R.id.txtEstado_Oxy);
+//        txtEstado_Oxy = findViewById(R.id.txtEstado_Oxy);
 
     }
 
@@ -194,10 +194,10 @@ public class MedicoesActivity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
-//        startLEScan_Thermo();
+        startLEScan_Thermo();
 //        startLEScan_Tensio();
 //        startLEScan_Ecg();
-        startLEScan_Oxy();
+//        startLEScan_Oxy();
         BLECenter.bus().register(this);
 
     }
@@ -207,16 +207,16 @@ public class MedicoesActivity extends AppCompatActivity {
         super.onResume();
 
         timeOut = new TimeOut(this);
-        txtEstado_Thermo.setText("Searching for sensor");
-        showLoading_Thermo();
-
-        txtEstado_Tensio.setText("Searching for sensor");
-        showLoading_Tensio();
-
-        txtEstado_Ecg.setText("Searching for sensor");
-        showLoading_Ecg();
-
-        txtEstado_Oxy.setText("Searching for sensor");
+//        txtEstado_Thermo.setText("Searching for sensor");
+//        showLoading_Thermo();
+//
+//        txtEstado_Tensio.setText("Searching for sensor");
+//        showLoading_Tensio();
+//
+//        txtEstado_Ecg.setText("Searching for sensor");
+//        showLoading_Ecg();
+//
+//        txtEstado_Oxy.setText("Searching for sensor");
         showLoading_Oxy();
 
     }
@@ -694,50 +694,50 @@ public class MedicoesActivity extends AppCompatActivity {
                     HR = data.getHeartRate();
                     valorHR.setText(Integer.toString(HR));
                 }
-
-                try {
-                    Thread.sleep(1000);
-                    //Log.d("MYINT", "value2: "+temperatura);
-                    String frase = Float.toString(HR);
-                    String msg = "S3: " + frase;
-                    //String str = String.valueOf(temperatura);
-                    socket = new Socket(ip1, 12345);
-                    dos = new DataOutputStream(socket.getOutputStream());
-
-                    dos.write(msg.getBytes(StandardCharsets.UTF_8));
-                    dos.close();
-                    dos.flush();
-                    socket.close();
-
-
-                } catch (IOException | InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+//
+//                try {
+//                    Thread.sleep(1000);
+//                    //Log.d("MYINT", "value2: "+temperatura);
+//                    String frase = Float.toString(HR);
+//                    String msg = "S3: " + frase;
+//                    //String str = String.valueOf(temperatura);
+//                    socket = new Socket(ip1, 12345);
+//                    dos = new DataOutputStream(socket.getOutputStream());
+//
+//                    dos.write(msg.getBytes(StandardCharsets.UTF_8));
+//                    dos.close();
+//                    dos.flush();
+//                    socket.close();
+//
+//
+//                } catch (IOException | InterruptedException e) {
+//                    throw new RuntimeException(e);
+//                }
             }
         });
     }
 
-    @Subscribe
-    @SuppressWarnings("unused")
-    public void onBLEDeviceConnectionStateEvent_Ecg(final BLEDeviceStateEvent event) {
-        this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (event.getMac().equalsIgnoreCase(mac)) {
-                    if (event.getConnectionState() == BLEDeviceStateEvent.CONNECTION_STATE_CONNECTING) {
-                        txtEstado_Ecg.setText(R.string.state_connecting);
-                    } else if (event.getConnectionState() == BLEDeviceStateEvent.CONNECTION_STATE_CONNECTED) {
-                        txtEstado_Ecg.setText("Medição realizada");
-                        hideLoading_Ecg();
-                    } else if (event.getConnectionState() == BLEDeviceStateEvent.CONNECTION_STATE_DISCONNECTING) {
-                        txtEstado_Ecg.setText(R.string.state_disconnecting);
-                    } else if (event.getConnectionState() == BLEDeviceStateEvent.CONNECTION_STATE_GATT_FAILED) {
-                        txtEstado_Ecg.setText("Dispositivo desligado");
-                    }
-                }
-            }
-        });
-    }
+//    @Subscribe
+//    @SuppressWarnings("unused")
+//    public void onBLEDeviceConnectionStateEvent_Ecg(final BLEDeviceStateEvent event) {
+//        this.runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (event.getMac().equalsIgnoreCase(mac)) {
+//                    if (event.getConnectionState() == BLEDeviceStateEvent.CONNECTION_STATE_CONNECTING) {
+//                        txtEstado_Ecg.setText(R.string.state_connecting);
+//                    } else if (event.getConnectionState() == BLEDeviceStateEvent.CONNECTION_STATE_CONNECTED) {
+//                        txtEstado_Ecg.setText("Medição realizada");
+//                        hideLoading_Ecg();
+//                    } else if (event.getConnectionState() == BLEDeviceStateEvent.CONNECTION_STATE_DISCONNECTING) {
+//                        txtEstado_Ecg.setText(R.string.state_disconnecting);
+//                    } else if (event.getConnectionState() == BLEDeviceStateEvent.CONNECTION_STATE_GATT_FAILED) {
+//                        txtEstado_Ecg.setText("Dispositivo desligado");
+//                    }
+//                }
+//            }
+//        });
+//    }
 
     private void startLEScan_Oxy() {
         bleCenter.startBLEScan(DeviceFactory.Device.OXIMETER.getScanOption());

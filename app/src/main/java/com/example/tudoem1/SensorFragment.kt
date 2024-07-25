@@ -1,59 +1,26 @@
 package com.example.tudoem1
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import com.squareup.otto.Subscribe
 import visiomed.fr.bleframework.common.BLECenter
-import visiomed.fr.bleframework.common.BLEContext
 import visiomed.fr.bleframework.data.ecg.ECGExamData
-import visiomed.fr.bleframework.data.ecg.ECGRealTimeData
-import visiomed.fr.bleframework.device.BloodPressureMonitor
-import visiomed.fr.bleframework.device.DeviceFactory
 import visiomed.fr.bleframework.device.Oximeter
 import visiomed.fr.bleframework.device.Thermometer
-import visiomed.fr.bleframework.device.ecg.ECG
-import visiomed.fr.bleframework.event.common.BLEDeviceStateEvent
-import visiomed.fr.bleframework.event.oximeter.OximeterEvent
-import visiomed.fr.bleframework.event.thermometer.ThermometerEvent
 
 class SensorFragment : Fragment() {
-    private var checkThermo = true
-    private var checkOxy = true
-
-    private var temperatura = 0.0F
-    private var oxygenContent = -1
-    private var pulse = -1
-    private var flagTemp = 0
-    private var ip1: String? = null
-
-    private lateinit var bleCenter: BLECenter
-    private lateinit var thermometer: Thermometer
-    private lateinit var oximeter: Oximeter
-
 
     private lateinit var thermometerValue: TextView
-    private lateinit var thermometerState: TextView
-    private lateinit var valorSYS: TextView
-    private lateinit var valorDIA: TextView
-    private lateinit var txtEstado_Tensio: TextView
     private lateinit var oximeterSpOValue: TextView
     private lateinit var oximeterPrBpmValue: TextView
-    private lateinit var oximeterState: TextView
     private lateinit var homeButton: Button
     private lateinit var readTemperature: Button
     private lateinit var readOxygen: Button
-
-    private val  ecgClass = ECGExamData()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,21 +29,50 @@ class SensorFragment : Fragment() {
         val view = inflater.inflate(R.layout.activity_medicoes, container, false)
         initViews(view)
 
+        val socketIP = activity?.intent?.getStringExtra("Ip_text")
         homeButton.setOnClickListener {
             val intent = Intent(activity, MainActivity::class.java)
             startActivity(intent)
-            activity?.finish()
         }
 
         readTemperature.setOnClickListener {
-            BLECenter.bus().register(this)
-            startLEScan_Thermo()
-
+            val oxygenContent = activity?.intent?.getIntExtra("OXYGEN_CONTENT", -1) ?: -1
+            val pulse = activity?.intent?.getIntExtra("PULSE", -1) ?: -1
+            val intent = Intent(activity, Activity_Temperature::class.java).apply {
+                putExtra("OXYGEN_CONTENT", oxygenContent)
+                putExtra("PULSE", pulse)
+                putExtra("Ip_text", socketIP)
+            }
+            startActivity(intent)
         }
 
-        readOxygen.setOnClickListener{
-            BLECenter.bus().register(this)
-            startLEScan_Oxy()
+        readOxygen.setOnClickListener {
+            val temperature = activity?.intent?.getFloatExtra("Temperature", -1.0F)
+            val intent = Intent(activity, Activity_Oxy::class.java).apply {
+                putExtra("Temperature", temperature)
+                putExtra("Ip_text", socketIP)
+            }
+            startActivity(intent)
+        }
+
+        val oxygenContent = activity?.intent?.getIntExtra("OXYGEN_CONTENT", -1) ?: -1
+        val pulse = activity?.intent?.getIntExtra("PULSE", -1) ?: -1
+
+        if (oxygenContent != -1 && pulse != -1) {
+            oximeterSpOValue.text = oxygenContent.toString()
+            oximeterPrBpmValue.text = pulse.toString()
+        } else {
+            oximeterSpOValue.text = "No Data"
+            oximeterPrBpmValue.text = "No Data"
+        }
+
+        val temperature = activity?.intent?.getFloatExtra("Temperature", -1.0F)
+
+        // Display the temperature value
+        if (temperature != -1.0F) {
+            thermometerValue.text = "$temperature°C"
+        } else {
+            thermometerValue.text = "No Data"
         }
 
         return view
@@ -85,185 +81,187 @@ class SensorFragment : Fragment() {
 
     private fun initViews(view: View) {
         thermometerValue = view.findViewById(R.id.txt_thermo)
-        thermometerState = view.findViewById(R.id.txtEstado_Thermo)
-        valorSYS = view.findViewById(R.id.valorSYS)
-        valorDIA = view.findViewById(R.id.valorDIA)
-        txtEstado_Tensio = view.findViewById(R.id.txtEstado_Tensio)
         oximeterSpOValue = view.findViewById(R.id.valorSpO)
         oximeterPrBpmValue = view.findViewById(R.id.valorPrbpm)
-        oximeterState = view.findViewById(R.id.txtEstado_Oxy)
 
         homeButton = view.findViewById(R.id.btnVoltar)
         readTemperature = view.findViewById(R.id.btnStartReadingTemperature)
         readOxygen = view.findViewById(R.id.btnStartReadingOxygen)
     }
 
+
     override fun onStart() {
         super.onStart()
-        BLECenter.DEBUG_LOG_ON = true
-        BLECenter.DEBUG_LOG_LEVEL = 1
-        bleCenter = BLEContext.getBLECenter(requireContext().applicationContext)
+//        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+//        StrictMode.setThreadPolicy(policy)
+//        BLECenter.DEBUG_LOG_ON = true
+//        BLECenter.DEBUG_LOG_LEVEL = 1
+//        bleCenter = BLEContext.getBLECenter(requireContext().applicationContext)
 
     }
+//
+//    override fun onStop() {
+//        super.onStop()
+//        BLECenter.bus().unregister(this)
+//    }
+//    override fun onResume() {
+//        super.onResume()
+//
+//        if (::thermometer.isInitialized) {
+//            thermometerState.text = if (thermometer.hasConnection()) {
+//                "Sensor Connected"
+//            } else {
+//
+//                "Searching for sensor"
+//            }
+//        }
+//
+////        showLoading_Thermo()
+//
+//        txtEstado_Tensio.text = "Searching for sensor"
+////        showLoading_Tensio()
+//
+////        txtEstado_Ecg.text = "Searching for sensor"
+////        showLoading_Ecg()
+//        if (::oximeter.isInitialized) {
+//            oximeterState.text = if (oximeter.hasConnection()) {
+//                "Sensor Connected"
+//            } else {
+//                "Searching for sensor"
+//            }
+//        }
+////        showLoading_Oxy()
+//        val data = ecgClass.heartRate
+//        data.toString().let { Log.d("test", it) }
+//    }
 
-    override fun onResume() {
-        super.onResume()
-
-        if (::thermometer.isInitialized) {
-            thermometerState.text = if (thermometer.hasConnection()) {
-                "Sensor Connected"
-            } else {
-
-                "Searching for sensor"
-            }
-        }
-
-//        showLoading_Thermo()
-
-        txtEstado_Tensio.text = "Searching for sensor"
-//        showLoading_Tensio()
-
-//        txtEstado_Ecg.text = "Searching for sensor"
-//        showLoading_Ecg()
-        if (::oximeter.isInitialized) {
-            oximeterState.text = if (oximeter.hasConnection()) {
-                "Sensor Connected"
-            } else {
-                "Searching for sensor"
-            }
-        }
-//        showLoading_Oxy()
-        val data = ecgClass.heartRate
-        data.toString().let { Log.d("test", it) }
-    }
-
-    private fun startLEScan_Thermo() {
-        Log.i("enter here", "scanning")
-        bleCenter.startBLEScan(DeviceFactory.Device.THERMOMETER.scanOption)
-
-        Thread {
-            while (checkThermo)  {
-                val devices = bleCenter.devices
-                if (devices.isNotEmpty()) {
-                    devices.forEach { device ->
-                        if (device is Thermometer) {
-                            device.connect()
-                            thermometer =
-                                bleCenter.getDevice(device.bleDevice.address) as Thermometer
-                            val mac = device.bleDevice.address
-                            Log.i("LOG_APP", mac ?: "")
-
-                            if (ActivityCompat.checkSelfPermission(
-                                    requireContext(),
-                                    Manifest.permission.BLUETOOTH_CONNECT
-                                ) != PackageManager.PERMISSION_GRANTED
-                            ) {
-                                // Request permissions if needed
-                                ActivityCompat.requestPermissions(
-                                    requireActivity(),
-                                    arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
-                                    0
-                                )
-                                return@Thread
-                            }
-
-                            Log.i("LOG_APP", device.bleDevice.name ?: "")
-                            checkThermo = false
-                            stopLEScan_Thermo()
-                            return@Thread
-                        }
-                    }
-                }
-            }
-            Thread.currentThread().interrupt()
-        }.start()
-    }
-
-    private fun stopLEScan_Thermo() {
-        bleCenter.stopBLEScan()
-    }
-
-    @Subscribe
-    fun onThermometerEvent(event: ThermometerEvent) {
-
-        val data = event.thermometerData
-        temperatura = data.temperature / 10.0F
-        Log.d("MYINT", "value1: $temperatura")
-
-        if (temperatura < 32 || temperatura > 43) {
-            flagTemp = 1
-            temperatura = 1F
-//            txtEstado_Thermo.text = "Searching for sensor"
-//            startLEScan_Thermo()
-        } else {
-            thermometerValue.text = temperatura.toString()
-            thermometer.disconnect()
-            BLECenter.bus().unregister(this)
-        }
-    }
-
-    private fun startLEScan_Oxy() {
-        bleCenter.startBLEScan(DeviceFactory.Device.OXIMETER.scanOption)
-
-        Thread {
-            while (checkOxy) {
-                Log.i("BLE Oxy", bleCenter.devices.toString())
-
-                val devices = bleCenter.devices
-                if (devices.isNotEmpty()) {
-                    devices.forEach { device ->
-                        if (device is Oximeter) {
-                            device.connect()
-                            oximeter = bleCenter.getDevice(device.bleDevice.address) as Oximeter
-                            val mac = device.bleDevice.address
-                            Log.i("LOG_APP1", mac)
-
-                            if (ActivityCompat.checkSelfPermission(
-                                    requireContext(),
-                                    Manifest.permission.BLUETOOTH_CONNECT
-                                ) != PackageManager.PERMISSION_GRANTED
-                            ) {
-                                ActivityCompat.requestPermissions(
-                                    requireActivity(),
-                                    arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
-                                    0
-                                )
-                                return@Thread
-                            }
-
-                            Log.i("LOG_APP", device.bleDevice.name ?: "")
-                            stopLEScan_Oxy()
-                            checkOxy = false
-                            return@Thread
-                        }
-                    }
-                }
-            }
-        }.start()
-    }
-
-    private fun stopLEScan_Oxy() {
-        bleCenter.stopBLEScan()
-    }
-
-    @Subscribe
-    fun onOximeterEvent(event: OximeterEvent) {
-
-        val oxygenContent = event.oximeterData.oxygenContent
-        val pulse = event.oximeterData.pulse
-        Log.d("Oxy Values", oxygenContent.toString())
-        Log.d("Oxy Values", pulse.toString())
-
-
-        oximeterSpOValue.text = oxygenContent.toString()
-        oximeterPrBpmValue.text = pulse.toString()
-
-        oximeter.disconnect()
-        BLECenter.bus().unregister(this)
-
-    }
-
+//    private fun startLEScan_Thermo() {
+//        Log.i("enter here", "scanning")
+//        bleCenter.startBLEScan(DeviceFactory.Device.THERMOMETER.scanOption)
+//
+//        Thread {
+//            while (true) {
+//                val devices = bleCenter.devices
+//                if (devices.isNotEmpty()) {
+//                    devices.forEach { device ->
+//                        if (device is Thermometer) {
+//                            device.connect()
+//                            thermometer =
+//                                bleCenter.getDevice(device.bleDevice.address) as Thermometer
+//                            mac = device.bleDevice.address
+//                            Log.i("LOG_APP", mac ?: "")
+//
+//                            if (ActivityCompat.checkSelfPermission(
+//                                    requireContext(),
+//                                    Manifest.permission.BLUETOOTH_CONNECT
+//                                ) != PackageManager.PERMISSION_GRANTED
+//                            ) {
+//                                // Request permissions if needed
+//                                ActivityCompat.requestPermissions(
+//                                    requireActivity(),
+//                                    arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
+//                                    0
+//                                )
+//                                return@Thread
+//                            }
+//
+//                            Log.i("LOG_APP", device.bleDevice.name ?: "")
+//                            stopLEScan_Thermo()
+//                            return@Thread
+//                        }
+//                    }
+//                }
+//            }
+//        }.start()
+//    }
+//
+//    private fun stopLEScan_Thermo() {
+//        BLECenter.bus().register(thermometer)
+//        BLECenter.bus().post(thermometer)
+//        bleCenter.stopBLEScan()
+//    }
+//
 //    @Subscribe
+//    fun onThermometerEvent(event: ThermometerEvent) {
+//
+//        val data = event.thermometerData
+//        temperatura = data.temperature / 10.0F
+//        Log.d("MYINT", "value1: $temperatura")
+//
+//        if (temperatura < 32 || temperatura > 43) {
+//            flagTemp = 1
+//            temperatura = 1F
+////            txtEstado_Thermo.text = "Searching for sensor"
+////            startLEScan_Thermo()
+//        } else {
+//            thermometerValue.text = temperatura.toString()
+//            thermometer.disconnect()
+//        }
+//    }
+//
+//    private fun startLEScan_Oxy() {
+//        bleCenter.startBLEScan(DeviceFactory.Device.OXIMETER.scanOption)
+//
+//        Thread {
+//            while (true) {
+//                Log.i("BLE Oxy", bleCenter.devices.toString())
+//
+//                val devices = bleCenter.devices
+//                if (devices.isNotEmpty()) {
+//                    devices.forEach { device ->
+//                        if (device is Oximeter) {
+//                            device.connect()
+//                            oximeter = bleCenter.getDevice(device.bleDevice.address) as Oximeter
+//                            mac = device.bleDevice.address
+//
+//                            Log.i("LOG_APP1", mac)
+//
+//                            if (ActivityCompat.checkSelfPermission(
+//                                    requireContext(),
+//                                    Manifest.permission.BLUETOOTH_CONNECT
+//                                ) != PackageManager.PERMISSION_GRANTED
+//                            ) {
+//                                ActivityCompat.requestPermissions(
+//                                    requireActivity(),
+//                                    arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
+//                                    0
+//                                )
+//                                return@Thread
+//                            }
+//
+//                            Log.i("LOG_APP", device.bleDevice.name ?: "")
+//                            stopLEScan_Oxy()
+//                            return@Thread
+//                        }
+//                    }
+//                }
+//            }
+//        }.start()
+//    }
+//
+//    private fun stopLEScan_Oxy() {
+//        BLECenter.bus().register(oximeter)
+//        bleCenter.stopBLEScan()
+//    }
+//
+//
+//    @Subscribe
+//    fun onOximeterEvent(event: OximeterEvent) {
+//
+//        val oxygenContent = event.oximeterData.oxygenContent
+//        val pulse = event.oximeterData.pulse
+//        Log.d("Oxy Values", oxygenContent.toString())
+//        Log.d("Oxy Values", pulse.toString())
+//
+//
+//        oximeterSpOValue.text = oxygenContent.toString()
+//        oximeterPrBpmValue.text = pulse.toString()
+//
+//        oximeter.disconnect()
+//        BLECenter.bus().unregister(oximeter)
+//    }
+
+    //    @Subscribe
 //    fun onBLEDeviceConnectionStateEvent_Oxy(event: BLEDeviceStateEvent) {
 //
 //        if (event.connectionState == BLEDeviceStateEvent.CONNECTION_STATE_CONNECTING) {
@@ -273,7 +271,7 @@ class SensorFragment : Fragment() {
 //        } else if (event.connectionState == BLEDeviceStateEvent.CONNECTION_STATE_DISCONNECTING) {
 //            oximeterState.setText(R.string.state_disconnecting)
 //        } else if (event.connectionState == BLEDeviceStateEvent.CONNECTION_STATE_DISCONNECTED) {
-//            // txtEstado.setText(R.string.action_connect);
+//            // txtEstado.setText("R.string.action_connect");
 //        } else if (event.connectionState == BLEDeviceStateEvent.CONNECTION_STATE_GATT_FAILED) {
 //            oximeterState.setText("Dispositivo desligado")
 //            if (pulse < 0 || oxygenContent < 0) {

@@ -30,7 +30,7 @@ class SettingsActivity : AppCompatActivity() {
 
         btnSetIp.setOnClickListener {
             val ip = ipTextInput.text.toString()
-            val intent = Intent(this@SettingsActivity, MedicoesActivity::class.java)
+            val intent = Intent(this@SettingsActivity, AllMeasuresActivity::class.java)
             intent.putExtra("Ip_text", ip)
             startActivity(intent)
             finish()

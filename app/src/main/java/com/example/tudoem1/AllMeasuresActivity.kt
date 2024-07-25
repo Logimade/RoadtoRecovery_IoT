@@ -18,8 +18,8 @@ class AllMeasuresActivity : AppCompatActivity() {
 
         TabLayoutMediator(tabs, viewPager) { tab, position ->
             tab.text = when (position) {
-                0 -> "Network QoS"
-                1 -> "Sensors"
+                0 -> "Sensors"
+                1 -> "Network QoS"
                 else -> null
             }
         }.attach()

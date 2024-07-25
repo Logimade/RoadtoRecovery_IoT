@@ -18,18 +18,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/txtEstado_Thermo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center_horizontal"
-        android:text="A medir ..."
-        android:textColor="@android:color/black"
-        android:textSize="11sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Medições" />
 
     <Button
         android:id="@+id/btnStartReadingTemperature"
@@ -47,11 +35,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="32dp"
         android:textSize="26sp"
         android:text="Temperature"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtEstado_Thermo"/>
+        app:layout_constraintTop_toBottomOf="@+id/btnStartReadingTemperature"/>
 
     <TextView
         android:id="@+id/txt_thermo"
@@ -59,129 +47,116 @@
         android:layout_height="wrap_content"
         android:text="0ºC"
         android:textColor="@android:color/black"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="16dp"
         app:layout_constraintBaseline_toBaselineOf="@+id/txt_title_bar_Thermo"
         />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBaseline_toBaselineOf="@+id/txt_title_bar_Thermo"
-        />
+<!--    <TextView-->
+<!--        android:id="@+id/txtEstado_Tensio"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="32dp"-->
+<!--        android:gravity="center_horizontal"-->
+<!--        android:textColor="@android:color/black"-->
+<!--        android:text="A medir ..."-->
+<!--        android:textSize="11sp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/txt_title_bar_Thermo" />-->
 
+<!--    <TextView-->
+<!--        android:id="@+id/txt_title_bar_Tensio"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:textSize="26sp"-->
+<!--        android:text="Blood Pressure"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/txtEstado_Tensio"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/txt_title_bar_Thermo"-->
+<!--        app:layout_constraintBottom_toBottomOf="@id/BloodPressureValues"/>-->
 
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:id="@+id/BloodPressureValues"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="134dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/txtEstado_Tensio">-->
 
+<!--        <TextView-->
+<!--            android:id="@+id/txtSYS"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="26dp"-->
+<!--            android:layout_marginTop="30dp"-->
+<!--            android:text="SYS"-->
+<!--            android:textColor="@android:color/black"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
-    <TextView
-        android:id="@+id/txtEstado_Tensio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:gravity="center_horizontal"
-        android:textColor="@android:color/black"
-        android:text="A medir ..."
-        android:textSize="11sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_title_bar_Thermo" />
+<!--        <TextView-->
+<!--            android:id="@+id/textView8"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            android:text="mmHg"-->
+<!--            android:textColor="@android:color/black"-->
+<!--            android:textSize="12sp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/txtSYS"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
-    <TextView
-        android:id="@+id/txt_title_bar_Tensio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="26sp"
-        android:text="Blood Pressure"
-        app:layout_constraintTop_toBottomOf="@+id/txtEstado_Tensio"
-        app:layout_constraintStart_toStartOf="@+id/txt_title_bar_Thermo"
-        app:layout_constraintBottom_toBottomOf="@id/BloodPressureValues"/>
+<!--        <TextView-->
+<!--            android:id="@+id/valorSYS"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="&#45;&#45; &#45;&#45;"-->
+<!--            android:textColor="@android:color/black"-->
+<!--            android:textSize="25sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/textView8"-->
+<!--            app:layout_constraintBaseline_toBaselineOf="@+id/txtSYS"/>-->
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/BloodPressureValues"
-        android:layout_width="wrap_content"
-        android:layout_height="134dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtEstado_Tensio">
+<!--        <TextView-->
+<!--            android:id="@+id/txtDIA"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="8dp"-->
+<!--            android:text="DIA"-->
+<!--            android:textColor="@android:color/black"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/txtSYS" />-->
 
-        <TextView
-            android:id="@+id/txtSYS"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="26dp"
-            android:layout_marginTop="30dp"
-            android:text="SYS"
-            android:textColor="@android:color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--        <TextView-->
+<!--            android:id="@+id/textView9"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="8dp"-->
+<!--            android:text="mmHg"-->
+<!--            android:textColor="@android:color/black"-->
+<!--            android:textSize="12sp"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/textView8"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/txtDIA" />-->
 
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="5dp"
-            android:text="mmHg"
-            android:textColor="@android:color/black"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/txtSYS"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--        <TextView-->
+<!--            android:id="@+id/valorDIA"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="&#45;&#45; &#45;&#45;"-->
+<!--            android:textColor="@android:color/black"-->
+<!--            android:textSize="25sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/textView9"-->
+<!--            app:layout_constraintBaseline_toBaselineOf="@+id/txtDIA"/>-->
 
-        <TextView
-            android:id="@+id/valorSYS"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="-- --"
-            android:textColor="@android:color/black"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/textView8"
-            app:layout_constraintBaseline_toBaselineOf="@+id/txtSYS"/>
-
-        <TextView
-            android:id="@+id/txtDIA"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="DIA"
-            android:textColor="@android:color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/txtSYS" />
-
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="mmHg"
-            android:textColor="@android:color/black"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/textView8"
-            app:layout_constraintBottom_toTopOf="@+id/txtDIA" />
-
-        <TextView
-            android:id="@+id/valorDIA"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="-- --"
-            android:textColor="@android:color/black"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/textView9"
-            app:layout_constraintBaseline_toBaselineOf="@+id/txtDIA"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 <!--    <TextView-->
 <!--        android:id="@+id/txtEstado_Ecg"-->
@@ -228,29 +203,29 @@
 <!--        app:layout_constraintBaseline_toBaselineOf="@+id/txt_title_bar_Ecg"/>-->
 
 
-    <TextView
-        android:id="@+id/txtEstado_Oxy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="A medir ..."
-        android:textColor="@android:color/black"
-        android:textSize="11sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/BloodPressureValues"
-        />
+<!--    <TextView-->
+<!--        android:id="@+id/txtEstado_Oxy"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="32dp"-->
+<!--        android:text="A medir ..."-->
+<!--        android:textColor="@android:color/black"-->
+<!--        android:textSize="11sp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/BloodPressureValues"-->
+<!--        />-->
 
     <Button
         android:id="@+id/btnStartReadingOxygen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="46dp"
         android:gravity="center_horizontal"
         android:text="Read Oxygen"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/BloodPressureValues"/>
+        app:layout_constraintTop_toBottomOf="@+id/txt_title_bar_Thermo"/>
 
     <TextView
         android:id="@+id/txt_title_bar_Oxy"
@@ -261,16 +236,16 @@
         android:textSize="26sp"
         app:layout_constraintBottom_toBottomOf="@id/OximeterValues"
         app:layout_constraintStart_toStartOf="@+id/txt_title_bar_Thermo"
-        app:layout_constraintTop_toBottomOf="@+id/txtEstado_Oxy" />
+        app:layout_constraintTop_toBottomOf="@+id/btnStartReadingOxygen" />
     />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/OximeterValues"
         android:layout_width="wrap_content"
-        android:layout_height="134dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtEstado_Oxy">
+        app:layout_constraintTop_toBottomOf="@+id/btnStartReadingOxygen">
 
         <TextView
             android:id="@+id/SpO"
@@ -278,70 +253,48 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="26dp"
             android:layout_marginTop="30dp"
-            android:text="SpO₂"
+            android:text="SpO₂ (%)"
             android:textColor="@android:color/black"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="5dp"
-            android:text="%"
-            android:textColor="@android:color/black"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/SpO"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/valorSpO"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="-- --"
             android:textColor="@android:color/black"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/textView10"
-            app:layout_constraintBaseline_toBaselineOf="@+id/SpO"/>
+            app:layout_constraintStart_toStartOf="@+id/SpO"
+            app:layout_constraintTop_toBottomOf="@+id/SpO"/>
 
         <TextView
             android:id="@+id/PR"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="PR"
+            android:layout_marginTop="16dp"
+            android:text="PR (bpm)"
             android:textColor="@android:color/black"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/valorSpO"
             app:layout_constraintStart_toStartOf="@+id/SpO" />
-
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="bpm"
-            android:textColor="@android:color/black"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/textView10"
-            app:layout_constraintBottom_toTopOf="@+id/PR" />
 
         <TextView
             android:id="@+id/valorPrbpm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="-- --"
             android:textColor="@android:color/black"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/textView11"
-            app:layout_constraintBaseline_toBaselineOf="@+id/PR"/>
+            app:layout_constraintStart_toStartOf="@+id/PR"
+            app:layout_constraintTop_toBottomOf="@+id/PR"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -371,7 +324,7 @@
         android:id="@+id/btnVoltar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="64dp"
         android:text="Back"
         app:layout_constraintTop_toBottomOf="@+id/OximeterValues"
         app:layout_constraintEnd_toEndOf="parent"

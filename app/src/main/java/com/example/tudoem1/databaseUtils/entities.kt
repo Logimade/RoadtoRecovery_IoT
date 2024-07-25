@@ -23,7 +23,13 @@ data class MetricStructure(
     @PrimaryKey val timeStamp: String,
     val measureId: UUID,
     val coordinates: Coordinates,
-    val metrics: String
+    val metrics: String,
+    val networkType: String,                 // Add network type fields
+    val isHspaDc: String?,
+    val isLteCaCellInfo: String?,
+    val isLteCaServiceState: String?,
+    val isLteCaPhysicalChannel: String?,
+    val isLteCaOrNsaNrDisplayInfo: String?
 
 )
 
@@ -36,3 +42,4 @@ data class MeasureWithMetrics(
     )
     val metrics: List<MetricStructure>
 )
+

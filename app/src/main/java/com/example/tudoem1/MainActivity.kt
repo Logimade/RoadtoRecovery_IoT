@@ -1,17 +1,14 @@
 package com.example.tudoem1
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.LocationManager
-import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.tudoem1.databaseUtils.DatabasePrototype
 import com.example.tudoem1.services.GPService
 import com.example.tudoem1.services.NetMonsterService
 import com.example.tudoem1.services.UploadService
@@ -77,7 +74,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnSettings.setOnClickListener {
-            startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
+            startActivity(Intent(this@MainActivity, Activity_Oxy::class.java))
             finish()
         }
     }
