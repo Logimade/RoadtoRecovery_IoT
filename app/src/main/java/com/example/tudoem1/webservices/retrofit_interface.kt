@@ -58,8 +58,8 @@ interface retrofitInterface {
             .addInterceptor(interceptor)
             .build()
 
-//        private var BASE_URL = "https://tidycity.logimade.pt/server/api/"
-        private var BASE_URL = "https://bd11c55e26ad46e9611c84d6ff2373ad.serveo.net/"
+        private var BASE_URL = "https://tidycity.logimade.pt/server/api/"
+//        private var BASE_URL = "https://bd11c55e26ad46e9611c84d6ff2373ad.serveo.net/"
 
 
         operator fun invoke(): retrofitInterface {

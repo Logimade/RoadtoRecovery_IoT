@@ -28,4 +28,7 @@ interface NetworkMethods {
     @Query("UPDATE MeasureStructure SET endDate=:endMeasure, coordinatesEnd=:coordinatesStopped WHERE id=:key")
     fun updateMeasure(key:UUID, endMeasure:String, coordinatesStopped: Coordinates)
 
+    @Query("UPDATE MeasureStructure SET uploaded = 1 WHERE id=:key")
+    fun updateUploadStateMeasure(key: UUID)
+
 }

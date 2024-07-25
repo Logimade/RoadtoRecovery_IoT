@@ -20,6 +20,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.UUID
 
 class UploadService : Service() {
 
@@ -50,26 +51,28 @@ class UploadService : Service() {
                         ),
                         measures = metricStructureListToMeasureList(it.metrics)
                     )
-                }
-                val jsonPayload = Gson().toJson(postData)
-                Log.d("RetrofitPayload", jsonPayload)
+
+                    val jsonPayload = Gson().toJson(postData)
+                    Log.d("RetrofitPayload", jsonPayload)
 
 
-                // Perform upload operation
-                val call = retrofitInterface().postData(postData)
-                call.enqueue(object : Callback<Any> {
-                    override fun onResponse(call: Call<Any>, response: Response<Any>) {
-                        if (response.isSuccessful) {
-                            Log.d("Retrofit", "Data posted successfully")
-                        } else {
-                            Log.d("Retrofit", "Failed to post data")
+                    // Perform upload operation
+                    val call = retrofitInterface().postData(postData)
+                    call.enqueue(object : Callback<Any> {
+                        override fun onResponse(call: Call<Any>, response: Response<Any>) {
+                            if (response.isSuccessful) {
+                                Log.d("Retrofit", "Data posted successfully")
+                                db.daoNetworkMethods().updateUploadStateMeasure(it.acquisition.id)
+                            } else {
+                                Log.d("Retrofit", "Failed to post data")
+                            }
                         }
-                    }
 
-                    override fun onFailure(call: Call<Any>, t: Throwable) {
-                        Log.d("Retrofit", "Error: " + t.message)
-                    }
-                })
+                        override fun onFailure(call: Call<Any>, t: Throwable) {
+                            Log.d("Retrofit", "Error: " + t.message)
+                        }
+                    })
+                }
             }
 
             // Schedule the next check after a delay
