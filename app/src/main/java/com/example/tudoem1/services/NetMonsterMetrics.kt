@@ -64,13 +64,6 @@ class NetMonsterService : Service() {
         db = DatabasePrototype.getDatabase(this)
         handler = Handler(Looper.getMainLooper())
         isServiceRunning = false
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            registerReceiver(locationReceiver, IntentFilter("location_update"), RECEIVER_EXPORTED)
-        } else {
-            registerReceiver(locationReceiver, IntentFilter("location_update"))
-
-        }
     }
 
     private fun startUpdatingData() {
@@ -86,6 +79,14 @@ class NetMonsterService : Service() {
         when (intent?.action) {
             ACTION_START_SERVICE -> {
                 if (!isServiceRunning) {
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        registerReceiver(locationReceiver, IntentFilter("location_update"), RECEIVER_EXPORTED)
+                    } else {
+                        registerReceiver(locationReceiver, IntentFilter("location_update"))
+
+                    }
+
                     measureId = UUID.randomUUID()
 
                     serviceScope.launch {

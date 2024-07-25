@@ -2,6 +2,7 @@ package com.example.tudoem1
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
@@ -30,6 +31,7 @@ class SettingsActivity : AppCompatActivity() {
 
         btnSetIp.setOnClickListener {
             val ip = ipTextInput.text.toString()
+            Log.d("ip strinf", ip)
             val intent = Intent(this@SettingsActivity, AllMeasuresActivity::class.java)
             intent.putExtra("Ip_text", ip)
             startActivity(intent)

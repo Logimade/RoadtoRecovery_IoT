@@ -37,6 +37,9 @@ class Activity_Oxy : AppCompatActivity() {
 
         sensorStatus = findViewById(R.id.sensorStatus)
         loadingBar = findViewById(R.id.loadingBar)
+
+        ip = intent?.getStringExtra("Ip_text")
+
     }
 
     override fun onStart() {
@@ -124,18 +127,26 @@ class Activity_Oxy : AppCompatActivity() {
                 dos.close()
                 socket.close()
 
-                showToast("Measurement sent to Socket")
+                runOnUiThread {
+                    showToast("Measurement sent to Socket")
+                }
 
                 Test(oxygenContent, pulse)
 
             } catch (e: IOException) {
                 e.printStackTrace()
                 // Replace with appropriate context
-                showToast("IO Exception occurred")
+                runOnUiThread {
+                    showToast("IO Exception occurred")
+
+                }
             } catch (e: InterruptedException) {
                 e.printStackTrace()
                 // Replace with appropriate context
-                showToast("Thread was interrupted")
+                runOnUiThread {
+                    showToast("Thread was interrupted")
+
+                }
             }
         }.start()
     }

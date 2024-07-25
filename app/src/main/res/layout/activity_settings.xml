@@ -30,7 +30,7 @@
         android:layout_marginBottom="528dp"
         android:ems="10"
         android:inputType="text"
-        android:text="IP"
+        android:hint="IP"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnSetIp"
         app:layout_constraintStart_toStartOf="parent" />
@@ -39,16 +39,10 @@
         android:id="@+id/btnSetIp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="158dp"
-        android:layout_marginEnd="37dp"
-        android:layout_marginBottom="525dp"
         android:text="Set"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ip_text_input"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        tools:ignore="MissingConstraints" />
     <Button
         android:id="@+id/btnBackSettings"
         android:layout_width="wrap_content"

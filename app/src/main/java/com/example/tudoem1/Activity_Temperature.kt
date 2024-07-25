@@ -127,18 +127,27 @@ class Activity_Temperature : AppCompatActivity() {
                 dos.close()
                 socket.close()
 
-                showToast("Measurement sent to Socket")
+                runOnUiThread {
+                    showToast("Measurement sent to Socket")
+                }
 
                 Test(temperatura)
 
             } catch (e: IOException) {
+                Log.e("test","error")
                 e.printStackTrace()
                 // Replace with appropriate context
-                showToast("IO Exception occurred")
+                runOnUiThread {
+                    showToast("IO Exception occurred")
+
+                }
             } catch (e: InterruptedException) {
                 e.printStackTrace()
                 // Replace with appropriate context
-                showToast("Thread was interrupted")
+                runOnUiThread {
+                    showToast("Thread was interrupted")
+
+                }
             }
         }.start()
     }
