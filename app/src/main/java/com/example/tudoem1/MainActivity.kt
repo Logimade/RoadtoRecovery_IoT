@@ -77,6 +77,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnSettings.setOnClickListener {
+            val i1 = Intent(applicationContext, GPService::class.java)
+            startService(i1)
+
+
+            val i = Intent(this@MainActivity, NetMonsterService::class.java)
+            startService(i)
             startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
             finish()
         }
@@ -103,3 +109,5 @@ class MainActivity : AppCompatActivity() {
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
 }
+
+

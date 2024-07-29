@@ -79,6 +79,9 @@ class NetMonsterService : Service() {
         when (intent?.action) {
             ACTION_START_SERVICE -> {
                 if (!isServiceRunning) {
+                    registerReceiver(locationReceiver, IntentFilter("location_update"),
+                        RECEIVER_NOT_EXPORTED
+                   )
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                         registerReceiver(locationReceiver, IntentFilter("location_update"), RECEIVER_EXPORTED)
