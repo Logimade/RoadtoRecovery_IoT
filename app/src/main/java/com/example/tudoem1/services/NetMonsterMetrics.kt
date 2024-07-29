@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Handler
 import android.os.IBinder
@@ -206,7 +207,9 @@ class NetMonsterService : Service() {
                 getNetworkType(SUBSCRIPTION_ID, DetectorLteAdvancedNrDisplayInfo())
             Log.d("Network isLteCaOrNsaNrDisplayInfo", "$isLteCaOrNsaNrDisplayInfo")
 
+            val (downSpeed, upSpeed) = getNetworkSpeeds() ?: Pair(0.0, 0.0)
 
+            Log.d("Upload & Download Test", "Down i : $downSpeed, Up is : $upSpeed")
 
 
             merged = getCells()
@@ -233,6 +236,22 @@ class NetMonsterService : Service() {
                 putExtra(EXTRA_METRICS, merged.joinToString(separator = "\n"))
             }
             sendBroadcast(intent)
+        }
+    }
+
+
+    private fun getNetworkSpeeds(): Pair<Double, Double>? {
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+
+        return networkCapabilities?.let {
+            // Download speed in MBPS
+            val downSpeed = it.linkDownstreamBandwidthKbps / 1000.0
+
+            // Upload speed in MBPS
+            val upSpeed = it.linkUpstreamBandwidthKbps / 1000.0
+
+            Pair(downSpeed, upSpeed)
         }
     }
 
