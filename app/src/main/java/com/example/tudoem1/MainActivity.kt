@@ -9,9 +9,12 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
+import com.example.tudoem1.databaseUtils.DatabasePrototype
 import com.example.tudoem1.services.GPService
 import com.example.tudoem1.services.NetMonsterService
 import com.example.tudoem1.services.UploadService
+import kotlinx.coroutines.launch
 import util.Util
 
 class MainActivity : AppCompatActivity() {
@@ -52,11 +55,18 @@ class MainActivity : AppCompatActivity() {
         val intent1 = Intent(this@MainActivity, UploadService::class.java)
         startService(intent1)
 
+        if (checkGpsStatus()) {
+            val i = Intent(applicationContext, GPService::class.java)
+            startService(i)
+        }
+
         val btnStart: Button = findViewById(R.id.btnStart)
         val btnSettings: Button = findViewById(R.id.btnSettings)
         val btnNetwork: Button = findViewById(R.id.btnNetwork)
 
-//        DatabasePrototype.getDatabase(this@MainActivity).clearAllTables()
+//        lifecycleScope.launch {
+//            DatabasePrototype.getDatabase(this@MainActivity).clearAllTables()
+//        }
 
         btnStart.setOnClickListener {
             startActivity(Intent(this@MainActivity, AllMeasuresActivity::class.java))
@@ -64,10 +74,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnNetwork.setOnClickListener {
-            if (checkGpsStatus()) {
-                val i = Intent(applicationContext, GPService::class.java)
-                startService(i)
-            }
 
             val i = Intent(this@MainActivity, NetMonsterService::class.java)
             startService(i)
@@ -77,9 +83,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnSettings.setOnClickListener {
-            val i1 = Intent(applicationContext, GPService::class.java)
-            startService(i1)
-
 
             val i = Intent(this@MainActivity, NetMonsterService::class.java)
             startService(i)

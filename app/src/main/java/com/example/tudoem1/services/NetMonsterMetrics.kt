@@ -231,9 +231,11 @@ class NetMonsterService : Service() {
                     )
                 )
             }
-
+            Log.d("aaaaaa", locationCoordinates.toString())
             val intent = Intent(ACTION_DATA_UPDATED).apply {
                 putExtra(EXTRA_METRICS, merged.joinToString(separator = "\n"))
+                putExtra("Lat", locationCoordinates.lat.toString())
+                putExtra("Long",locationCoordinates.long.toString())
             }
             sendBroadcast(intent)
         }
