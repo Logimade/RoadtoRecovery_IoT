@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
-import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Handler
 import android.os.IBinder
@@ -32,7 +31,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Locale
+import java.util.UUID
 
 class NetMonsterService : Service() {
 
@@ -52,7 +53,7 @@ class NetMonsterService : Service() {
                     val longitude = it.getDoubleExtra("Longitude", 0.0)
                     locationCoordinates.lat = latitude
                     locationCoordinates.long = longitude
-                    Log.d("NetMonsterService", "Location updated: $locationCoordinates")
+                    Log.d("NetMonsterServiceGPS", "Location updated: $locationCoordinates")
                 }
             }
         }
@@ -80,14 +81,27 @@ class NetMonsterService : Service() {
         when (intent?.action) {
             ACTION_START_SERVICE -> {
                 if (!isServiceRunning) {
-                    registerReceiver(locationReceiver, IntentFilter("location_update"),
-                        RECEIVER_NOT_EXPORTED
-                   )
+//                    val a = registerReceiver(
+//                        locationReceiver, IntentFilter("location_update"),
+//                        RECEIVER_EXPORTED
+//                    )
+//                    Log.d("NetMonsterServiceGPS", a.toString())
+
+                    val release = Build.VERSION.RELEASE
+                    val sdkVersion = Build.VERSION.SDK_INT
+                    Log.d( "Android SDK:" ,"$sdkVersion ($release)")
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        registerReceiver(locationReceiver, IntentFilter("location_update"), RECEIVER_EXPORTED)
+                        Log.d("Test SDK", "yes")
+                        registerReceiver(
+                            locationReceiver,
+                            IntentFilter("location_update"),
+                            RECEIVER_EXPORTED
+                        )
                     } else {
-                        registerReceiver(locationReceiver, IntentFilter("location_update"))
+                        Log.d("Test SDK", "no")
+                        registerReceiver(locationReceiver, IntentFilter("location_update"),
+                            RECEIVER_NOT_EXPORTED)
 
                     }
 
@@ -207,11 +221,6 @@ class NetMonsterService : Service() {
                 getNetworkType(SUBSCRIPTION_ID, DetectorLteAdvancedNrDisplayInfo())
             Log.d("Network isLteCaOrNsaNrDisplayInfo", "$isLteCaOrNsaNrDisplayInfo")
 
-            val (downSpeed, upSpeed) = getNetworkSpeeds() ?: Pair(0.0, 0.0)
-
-            Log.d("Upload & Download Test", "Down i : $downSpeed, Up is : $upSpeed")
-
-
             merged = getCells()
             Log.d("NetMonsterService", "Data updated: \n${merged.joinToString(separator = "\n")}")
             serviceScope.launch {
@@ -231,31 +240,15 @@ class NetMonsterService : Service() {
                     )
                 )
             }
-            Log.d("aaaaaa", locationCoordinates.toString())
             val intent = Intent(ACTION_DATA_UPDATED).apply {
                 putExtra(EXTRA_METRICS, merged.joinToString(separator = "\n"))
                 putExtra("Lat", locationCoordinates.lat.toString())
-                putExtra("Long",locationCoordinates.long.toString())
+                putExtra("Long", locationCoordinates.long.toString())
             }
             sendBroadcast(intent)
         }
     }
 
-
-    private fun getNetworkSpeeds(): Pair<Double, Double>? {
-        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-
-        return networkCapabilities?.let {
-            // Download speed in MBPS
-            val downSpeed = it.linkDownstreamBandwidthKbps / 1000.0
-
-            // Upload speed in MBPS
-            val upSpeed = it.linkUpstreamBandwidthKbps / 1000.0
-
-            Pair(downSpeed, upSpeed)
-        }
-    }
 
     // Permission handling
     private fun arePermissionsGranted(): Boolean {
