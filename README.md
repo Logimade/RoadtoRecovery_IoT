@@ -4,7 +4,7 @@ The mobile app, developed using Kotlin for Android devices, is designed to colle
 
 ## Components
 
-The mobile app comprises two major components: **IoT Sensor Integration** and **Quality of Service (QoS) Monitoring**, as illustrated in Figure X1.
+The mobile app comprises two major components: **IoT Sensor Integration** and **Quality of Service (QoS) Monitoring**, as illustrated in [Diagram](#diagram).
 
 ### IoT Sensor Integration
 
@@ -26,7 +26,7 @@ The mobile app comprises two major components: **IoT Sensor Integration** and **
 
 ## Diagram
 
-![Diagram](docs/figure-x1.png)
+![Diagram](docs/Diagrams-Architectures.jpg)
 
 *Figure X1: Overview of the mobile app components, including IoT Sensor Integration and Quality of Service (QoS) Monitoring.*
 
